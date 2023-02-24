@@ -1,4 +1,4 @@
-module github.com/NpoolPlatform/spacemesh-sphinx-plugin
+module github.com/NpoolPlatform/sphinx-plugin-p2
 
 go 1.19
 

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/NpoolPlatform/message/npool/sphinxproxy"
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/getter"
-	coins_register "github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/register"
+	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/getter"
+	coins_register "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/client"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/config"

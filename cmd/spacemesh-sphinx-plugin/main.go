@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	serviceName = "Spacemesh Sphinx Plugin"
-	usageText   = "Spacemesh Sphinx Plugin Service"
+	serviceName = "Sphinx Plugin P2"
+	usageText   = "Sphinx Plugin P2 Service"
 )
 
 var (

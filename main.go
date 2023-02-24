@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/smh"
+	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/config"
 	"github.com/NpoolSpacemesh/spacemesh-plugin/client"
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"

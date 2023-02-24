@@ -1,10 +1,10 @@
 [Unit]
-Description=Spacemesh Sphinx Plugin
+Description=Sphinx Plugin P2
 After=network.target
 
 [Service]
 Environment="ENV_COIN_LOCAL_API="
-ExecStart=/opt/spacemesh-sphinx-plugin/spacemesh-sphinx-plugin run
+ExecStart=/opt/sphinx-plugin-p2/sphinx-plugin-p2 run
 ExecStop=/bin/kill -s QUIT $MAINPID
 Restart=always
 RestartSec=30

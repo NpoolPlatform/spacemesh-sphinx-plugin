@@ -1,6 +1,6 @@
 FROM uhub.service.ucloud.cn/entropypool/alpine:3.16
 
-COPY spacemesh-sphinx-plugin /usr/local/bin/spacemesh-sphinx-plugin
+COPY sphinx-plugin-p2 /usr/local/bin/sphinx-plugin-p2
 
 ENV ENV_COIN_LOCAL_API='' \
   ENV_COIN_PUBLIC_API='' \
@@ -12,5 +12,5 @@ ENV ENV_COIN_LOCAL_API='' \
   ENV_COIN_NET='' \
   ENV_COIN_TYPE=''
 
-ENTRYPOINT ["spacemesh-sphinx-plugin"]
+ENTRYPOINT ["sphinx-plugin-p2"]
 CMD ["help"]

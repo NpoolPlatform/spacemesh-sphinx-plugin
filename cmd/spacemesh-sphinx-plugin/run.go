@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/task"
+	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/task"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/config"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	cli "github.com/urfave/cli/v2"
@@ -24,7 +24,7 @@ func init() {
 var runCmd = &cli.Command{
 	Name:    "run",
 	Aliases: []string{"r"},
-	Usage:   "Run Spacemesh Sphinx Plugin daemon",
+	Usage:   "Run Sphinx Plugin P2 daemon",
 	After: func(c *cli.Context) error {
 		return logger.Sync()
 	},

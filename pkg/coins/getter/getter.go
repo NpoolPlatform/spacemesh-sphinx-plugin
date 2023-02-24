@@ -4,12 +4,12 @@ import (
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/register"
+	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 
 	// register handle
-	_ "github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/smh"
-	_ "github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/smh/plugin"
-	_ "github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/smh/sign"
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh/plugin"
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh/sign"
 )
 
 func GetTokenInfo(name string) *coins.TokenInfo {

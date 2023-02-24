@@ -1,0 +1,15 @@
+[Unit]
+Description=Spacemesh Sphinx Plugin
+After=network.target
+
+[Service]
+Environment="ENV_COIN_LOCAL_API="
+ExecStart=/opt/spacemesh-sphinx-plugin/spacemesh-sphinx-plugin run
+ExecStop=/bin/kill -s QUIT $MAINPID
+Restart=always
+RestartSec=30
+TimeoutSec=infinity
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

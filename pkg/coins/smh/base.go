@@ -12,7 +12,7 @@ import (
 
 const (
 	// There are 10^12 SMIDGE in one SMH.
-	SMIDGE_PER_SMH uint64 = 1000000000000
+	SmidgePreSmh uint64 = 1000000000000
 )
 
 var (
@@ -23,16 +23,16 @@ var (
 )
 
 var (
-	// ErrSolBlockNotFound ..
-	ErrSolBlockNotFound = errors.New("not found confirmed block in solana chain")
-	// ErrSolSignatureWrong ..
-	ErrSolSignatureWrong = errors.New("solana signature is wrong or failed")
+	// ErrSmhBlockNotFound ..
+	ErrSmhBlockNotFound = errors.New("not found confirmed block in spacemesh chain")
+	// ErrSmlSignatureWrong ..
+	ErrSmlSignatureWrong = errors.New("spacemesh signature is wrong or failed")
 )
 
 var (
-	SolTransactionFailed = `sol transaction failed`
+	SmhTransactionFailed = `spacemesh transaction failed`
 	lamportsLow          = `Transfer: insufficient lamports`
-	stopErrMsg           = []string{lamportsLow, SolTransactionFailed}
+	stopErrMsg           = []string{lamportsLow, SmhTransactionFailed}
 	spacemeshToken       = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
 )
 
@@ -45,18 +45,18 @@ func init() {
 }
 
 func ToSmh(smidge uint64) *big.Float {
-	// Convert lamports to sol:
+	// Convert lamports to SMH:
 	return big.NewFloat(0).
 		Quo(
 			big.NewFloat(0).SetUint64(smidge),
-			big.NewFloat(0).SetUint64(SMIDGE_PER_SMH),
+			big.NewFloat(0).SetUint64(SmidgePreSmh),
 		)
 }
 
 func ToSmidge(value float64) (uint64, big.Accuracy) {
 	return big.NewFloat(0).Mul(
 		big.NewFloat(0).SetFloat64(value),
-		big.NewFloat(0).SetUint64(SMIDGE_PER_SMH),
+		big.NewFloat(0).SetUint64(SmidgePreSmh),
 	).Uint64()
 }
 

@@ -3,22 +3,26 @@ package sign
 import (
 	"bytes"
 	"context"
+	"crypto/ed25519"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/big"
 
+	"github.com/spacemeshos/go-scale"
+	"github.com/spacemeshos/go-spacemesh/genvm/sdk"
+	tplWallet "github.com/spacemeshos/go-spacemesh/genvm/templates/wallet"
+	"github.com/spacemeshos/go-spacemesh/hash"
+
 	"github.com/NpoolPlatform/go-service-framework/pkg/oss"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
+	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
-	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins/sol"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"
-	bin "github.com/gagliardetto/binary"
-	"github.com/gagliardetto/solana-go"
-	"github.com/gagliardetto/solana-go/programs/system"
 	"github.com/spacemeshos/go-spacemesh/common/types"
+	"github.com/spacemeshos/go-spacemesh/genvm/core"
 	"github.com/spacemeshos/go-spacemesh/signing"
 )
 
@@ -33,6 +37,10 @@ func init() {
 		register.OpSign,
 		signTx,
 	)
+}
+
+func C(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+	return createAccount(ctx, in, tokenInfo)
 }
 
 // createAccount ..
@@ -52,13 +60,19 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 		fmt.Println(err)
 	}
 
-	// just use in testnet
-	types.DefaultTestAddressConfig()
+	if info.ENV != coins.CoinNetMain {
+		types.DefaultTestAddressConfig()
+	} else {
+		types.DefaultAddressConfig()
+	}
 
 	pubStr := signer.PublicKey().String()
 	priStr := hex.EncodeToString(signer.PrivateKey())
 	accStr := types.GenerateAddress([]byte(pubStr)).String()
 
+	fmt.Println(priStr)
+	fmt.Println(pubStr)
+	fmt.Println(accStr)
 	_out := ct.NewAccountResponse{
 		Address: accStr,
 	}
@@ -78,85 +92,68 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 
 // signTx ..
 func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
-	info := sol.SignMsgTx{}
+	info := smh.SignMsgTx{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return nil, err
 	}
 
-	var (
-		from   = info.BaseInfo.From
-		to     = info.BaseInfo.To
-		value  = info.BaseInfo.Value
-		rbHash = info.RecentBlockHash
-	)
-
-	fPublicKey, err := solana.PublicKeyFromBase58(from)
+	pk, err := oss.GetObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+info.BaseInfo.From, true)
+	if err != nil {
+		return nil, err
+	}
+	signer, err := signing.NewEdSigner(signing.WithPrivateKey(pk))
 	if err != nil {
 		return nil, err
 	}
 
-	tPublicKey, err := solana.PublicKeyFromBase58(to)
+	toAddr, err := types.StringToAddress(info.BaseInfo.To)
 	if err != nil {
 		return nil, err
 	}
+	amount, accuracy := smh.ToSmidge(info.BaseInfo.Value)
 
-	rhash, err := solana.HashFromBase58(rbHash)
-	if err != nil {
-		return nil, err
-	}
-
-	lamports, accuracy := sol.ToLarm(value)
 	if accuracy != big.Exact {
-		log.Warnf("transafer sol amount not accuracy: from %v-> to %v", value, lamports)
+		log.Warnf("transafer spacemesh amount not accuracy: from %v-> to %v", info.BaseInfo.Value, amount)
 	}
 
-	// build tx
-	tx, err := solana.NewTransaction(
-		[]solana.Instruction{
-			system.NewTransferInstruction(
-				lamports,
-				fPublicKey,
-				tPublicKey,
-			).Build(),
-		},
-		rhash,
-		solana.TransactionPayer(fPublicKey),
-	)
-	if err != nil {
-		return nil, err
-	}
+	payload := core.Payload{}
+	payload.GasPrice = info.GasPrice
+	payload.Nonce = info.Nonce
 
-	pk, err := oss.GetObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+from, true)
-	if err != nil {
-		return nil, err
-	}
+	args := tplWallet.SpendArguments{}
+	args.Destination = toAddr
+	args.Amount = amount
 
-	accountFrom := solana.PrivateKey(pk)
-	_, err = tx.Sign(
-		func(key solana.PublicKey) *solana.PrivateKey {
-			if accountFrom.PublicKey().Equals(key) {
-				return &accountFrom
-			}
-			return nil
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
+	tx := &types.Transaction{TxHeader: &types.TxHeader{}}
+	spawnargs := tplWallet.SpawnArguments{}
+	copy(spawnargs.PublicKey[:], signer.PublicKey().PublicKey)
+	principal := core.ComputePrincipal(tplWallet.TemplateAddress, &spawnargs)
 
-	err = tx.VerifySignatures()
-	if err != nil {
-		return nil, err
-	}
+	_tx := encode(&sdk.TxVersion, &principal, &sdk.MethodSpend, &payload, &args)
+	hh := hash.Sum(info.GenesisID, _tx)
+	sig := ed25519.Sign(signer.PrivateKey(), hh[:])
+	_tx = append(_tx, sig...)
+	tx.RawTx = types.NewRawTx(_tx)
+	tx.MaxSpend = 1
 
-	buf := bytes.Buffer{}
-	if err := tx.MarshalWithEncoder(bin.NewBinEncoder(&buf)); err != nil {
-		return nil, err
-	}
+	// todo: not sure,please check
+	// serializedTx, err := codec.Encode(tx)
 
-	_out := sol.BroadcastRequest{
-		Signature: buf.Bytes(),
+	_out := smh.BroadcastRequest{
+		TxData: tx.Raw,
 	}
 
 	return json.Marshal(_out)
+}
+
+func encode(fields ...scale.Encodable) []byte {
+	buf := bytes.NewBuffer(nil)
+	encoder := scale.NewEncoder(buf)
+	for _, field := range fields {
+		_, err := field.EncodeScale(encoder)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return buf.Bytes()
 }

@@ -2,7 +2,6 @@ package task
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"sync"
 	"time"
@@ -232,7 +231,6 @@ func (c *pluginClient) recv() {
 				}
 				{
 					respPayload, err := handler(context.Background(), req.GetPayload(), tokenInfo)
-					fmt.Println(tokenInfo)
 					if err != nil {
 						log.Errorf("GetCoinPlugin handle deal transaction error: %v", err)
 						resp = &sphinxproxy.ProxyPluginResponse{

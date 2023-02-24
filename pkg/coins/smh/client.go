@@ -29,23 +29,23 @@ func (sClients SClients) GetNode(ctx context.Context, endpointmgr *endpoints.Man
 		return nil, err
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, reqTimeout)
+	_, cancel := context.WithTimeout(ctx, reqTimeout)
 	defer cancel()
 
-	client := client.NewClient(endpoint, false)
-	err = client.Connect()
+	smhClient := client.NewClient(endpoint, false)
+	err = smhClient.Connect()
 	if err != nil {
 		return nil, err
 	}
 
-	return client, nil
+	return smhClient, nil
 }
 
 func (sClients *SClients) WithClient(ctx context.Context, fn func(ctx context.Context, c *client.Client) (bool, error)) error {
 	var (
 		apiErr, err error
 		retry       bool
-		client      *client.Client
+		smhClient   *client.Client
 	)
 	endpointmgr, err := endpoints.NewManager()
 	if err != nil {
@@ -57,12 +57,12 @@ func (sClients *SClients) WithClient(ctx context.Context, fn func(ctx context.Co
 			time.Sleep(retriesSleepTime)
 		}
 
-		client, err = sClients.GetNode(ctx, endpointmgr)
+		smhClient, err = sClients.GetNode(ctx, endpointmgr)
 		if err != nil {
 			continue
 		}
 
-		retry, apiErr = fn(ctx, client)
+		retry, apiErr = fn(ctx, smhClient)
 		if !retry {
 			return apiErr
 		}

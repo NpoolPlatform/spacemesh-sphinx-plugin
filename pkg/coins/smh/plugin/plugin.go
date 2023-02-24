@@ -13,14 +13,10 @@ import (
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
-	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins/sol"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"
 
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
-	bin "github.com/gagliardetto/binary"
-	"github.com/gagliardetto/solana-go"
-	"github.com/gagliardetto/solana-go/rpc"
 )
 
 // here register plugin func
@@ -46,19 +42,15 @@ func init() {
 		syncTx,
 	)
 
-	err := register.RegisteAbortFuncErr(sphinxplugin.CoinType_CoinTypespacemesh, sol.TxFailErr)
+	err := register.RegisteAbortFuncErr(sphinxplugin.CoinType_CoinTypespacemesh, smh.TxFailErr)
 	if err != nil {
 		panic(err)
 	}
 
-	err = register.RegisteAbortFuncErr(sphinxplugin.CoinType_CoinTypetspacemesh, sol.TxFailErr)
+	err = register.RegisteAbortFuncErr(sphinxplugin.CoinType_CoinTypetspacemesh, smh.TxFailErr)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func W(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
-	return walletBalance(ctx, in, tokenInfo)
 }
 
 func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
@@ -116,62 +108,65 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 		return nil, env.ErrEVNCoinNetValue
 	}
 
-	client := sol.Client()
+	// todo: should check,maybe can caculate from chain
+	gasPrice := uint64(1)
+	nonce := uint64(0)
+	genesisID := []byte{}
 
-	var recentBlockHash *rpc.GetLatestBlockhashResult
-	err = client.WithClient(ctx, func(_ctx context.Context, cli *rpc.Client) (bool, error) {
-		recentBlockHash, err = cli.GetLatestBlockhash(_ctx, rpc.CommitmentFinalized)
-		if err != nil || recentBlockHash == nil {
+	client := smh.Client()
+	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
+		accState, err := c.AccountState(v1.AccountId{Address: info.From})
+		if err != nil {
 			return true, err
 		}
-		return false, err
+		nonce = accState.StateProjected.Counter
+		genesisID, err = c.GetGenesisID()
+		if err != nil {
+			return true, err
+		}
+		return false, nil
 	})
 	if err != nil {
 		return in, err
 	}
 
-	_out := sol.SignMsgTx{
-		BaseInfo:        info,
-		RecentBlockHash: recentBlockHash.Value.Blockhash.String(),
+	_out := smh.SignMsgTx{
+		BaseInfo:  info,
+		GasPrice:  gasPrice,
+		GenesisID: genesisID,
+		Nonce:     nonce,
 	}
 
 	return json.Marshal(_out)
 }
 
 func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
-	info := sol.BroadcastRequest{}
+	info := smh.BroadcastRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
 	}
 
-	tx, err := solana.TransactionFromDecoder(bin.NewBinDecoder(info.Signature))
+	client := smh.Client()
 	if err != nil {
 		return in, err
 	}
 
-	err = tx.VerifySignatures()
-	if err != nil {
-		return in, sol.ErrSolSignatureWrong
-	}
+	var txState *v1.TransactionState
 
-	client := sol.Client()
-	if err != nil {
-		return in, err
-	}
-	var cid solana.Signature
-	err = client.WithClient(ctx, func(_ctx context.Context, cli *rpc.Client) (bool, error) {
-		cid, err = cli.SendTransaction(_ctx, tx)
-		if err != nil && !sol.TxFailErr(err) {
+	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
+		txState, err = c.SubmitCoinTransaction(info.TxData)
+		if err != nil {
 			return true, err
 		}
-		return false, err
+		return false, nil
 	})
+
 	if err != nil {
 		return in, err
 	}
 
 	_out := ct.SyncRequest{
-		TxID: cid.String(),
+		TxID: txState.Id.String(),
 	}
 
 	return json.Marshal(_out)
@@ -184,46 +179,40 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return in, err
 	}
 
-	signature, err := solana.SignatureFromBase58(info.TxID)
-	if err != nil {
-		return in, err
-	}
-
-	client := sol.Client()
-	var chainMsg *rpc.GetTransactionResult
-	err = client.WithClient(ctx, func(_ctx context.Context, cli *rpc.Client) (bool, error) {
-		chainMsg, err = cli.GetTransaction(
-			_ctx,
-			signature,
-			&rpc.GetTransactionOpts{
-				Encoding:   solana.EncodingBase58,
-				Commitment: rpc.CommitmentFinalized,
-			})
+	client := smh.Client()
+	var txState *v1.TransactionState
+	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
+		txState, _, err = c.TransactionState([]byte(info.TxID), false)
 		if err != nil {
 			return true, err
 		}
-		return false, err
+		return false, nil
 	})
 
 	if err != nil {
 		return in, err
 	}
 
-	if chainMsg == nil {
+	// todo: should check
+	if txState == nil || (txState.State == v1.TransactionState_TRANSACTION_STATE_MESH ||
+		txState.State == v1.TransactionState_TRANSACTION_STATE_MEMPOOL) {
 		return in, env.ErrWaitMessageOnChain
 	}
 
-	if chainMsg != nil && chainMsg.Meta.Err != nil {
+	if txState != nil && (txState.State == v1.TransactionState_TRANSACTION_STATE_UNSPECIFIED ||
+		txState.State == v1.TransactionState_TRANSACTION_STATE_REJECTED ||
+		txState.State == v1.TransactionState_TRANSACTION_STATE_CONFLICTING ||
+		txState.State == v1.TransactionState_TRANSACTION_STATE_INSUFFICIENT_FUNDS) {
 		sResp := &ct.SyncResponse{}
 		sResp.ExitCode = -1
 		out, mErr := json.Marshal(sResp)
 		if mErr != nil {
 			return in, mErr
 		}
-		return out, fmt.Errorf("%v,%v", sol.SolTransactionFailed, err)
+		return out, fmt.Errorf("%v,%v", smh.SmhTransactionFailed, err)
 	}
 
-	if chainMsg != nil && chainMsg.Meta.Err == nil {
+	if txState != nil && txState.State == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
 		sResp := &ct.SyncResponse{}
 		sResp.ExitCode = 0
 		out, err := json.Marshal(sResp)
@@ -233,5 +222,5 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return out, nil
 	}
 
-	return in, sol.ErrSolBlockNotFound
+	return in, smh.ErrSmhBlockNotFound
 }

@@ -2,7 +2,7 @@ package getter
 
 import (
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins"
+	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 
 	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/register"
 

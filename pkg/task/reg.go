@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/getter"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
-	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins/getter"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 )

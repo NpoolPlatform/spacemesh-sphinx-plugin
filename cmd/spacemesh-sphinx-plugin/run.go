@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/task"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/config"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
-	"github.com/NpoolPlatform/sphinx-plugin/pkg/task"
 	cli "github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 )

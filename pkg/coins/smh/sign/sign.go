@@ -9,8 +9,8 @@ import (
 	"math/big"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/oss"
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/register"
+	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins/sol"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"

@@ -10,9 +10,9 @@ import (
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"
 
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
-	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/register"
 	"github.com/NpoolPlatform/spacemesh-sphinx-plugin/pkg/coins/smh"
+	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins/sol"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"

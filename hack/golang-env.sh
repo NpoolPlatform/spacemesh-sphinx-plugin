@@ -2,6 +2,15 @@
 
 go_name=go1.19.6
 
+set +e
+rc=`go version | grep $go_name`
+if [ $? -eq 0 ]; then
+    exit 0
+fi
+set -e
+
+echo "Will change go version to $go_name"
+
 go_tar="go1.19.6.linux-amd64.tar.gz"
 go_tar_url="https://go.dev/dl/$go_tar"
 go_data=/tmp/$go_name

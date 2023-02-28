@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+MY_PATH=`cd $(dirname $0);pwd`
+source $MY_PATH/golang-env.sh
 set -euo pipefail
 
 # Default timeout is 1800s

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+MY_PATH=`cd $(dirname $0);pwd`
+source $MY_PATH/golang-env.sh
 
 set -o errexit
 set -o nounset

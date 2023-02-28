@@ -5,7 +5,6 @@ SHELL:=/usr/bin/env bash
 
 COLOR:=\\033[36m
 NOCOLOR:=\\033[0m
-GITREPO=$(shell git remote -v | grep fetch | awk '{print $$2}' | sed 's/\.git//g' | sed 's/https:\/\///g')
 SUBCMDS=$(wildcard cmd/*)
 SERVICES=$(SUBCMDS:cmd/%=%)
 SERVICEIMAGES=$(SERVICES:%=%-image)
@@ -17,14 +16,10 @@ init:
 	cp -f .githooks/* .git/hooks
 
 go.mod:
-	go mod init ${GITREPO}
-	go mod tidy -compat=1.19
+	${REPO_ROOT}/hack/gomod.sh
 
 deps:
-	go get github.com/ugorji/go/codec@v1.2.7
-	go get -d ./...
-	go mod tidy -compat=1.19
-
+	${REPO_ROOT}/hack/deps.sh
 ##@ Verify
 
 .PHONY: add-verify-hook verify verify-build verify-golangci-lint verify-go-mod verify-shellcheck verify-spelling all

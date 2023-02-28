@@ -133,15 +133,7 @@
 以下表格也是所有类型plugin的列表
 |              币种              | 默认值 | 出块时间 |
 |:------------------------------:|:------:|:--------:|
-|            filecoin            |  20s   |   30s    |
-|            bitcoin             |  7min  |  10min   |
-|             solana             |   1s   |   0.4s   |
-| ethereum(eth、23种erc20 tokens) |  12s   |  10~20s  |
-|           usdcerc20            |  12s   |  10~20s  |
-|           binanceusd           |   4s   |    5s    |
-|          binancecoin           |   4s   |    5s    |
-|              tron              |   2s   |    3s    |
-|           usdttrc20            |   2s   |    3s    |
+|            spacemesh            |  30s   |   60s    |
 
 ### wallet-status-check
 

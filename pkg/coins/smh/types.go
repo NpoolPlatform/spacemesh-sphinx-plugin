@@ -2,6 +2,7 @@ package smh
 
 import (
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"
+	"github.com/spacemeshos/go-spacemesh/common/types"
 )
 
 type SignMsgTx struct {
@@ -13,5 +14,6 @@ type SignMsgTx struct {
 }
 
 type BroadcastRequest struct {
-	TxData []byte `json:"signature"`
+	SpawnTx *types.RawTx `json:"spawn_tx"`
+	SpendTx *types.RawTx `json:"spend_tx"`
 }

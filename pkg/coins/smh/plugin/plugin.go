@@ -3,7 +3,6 @@ package plugin
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"math/big"
 
 	smhclient "github.com/NpoolSpacemesh/spacemesh-plugin/client"
@@ -63,6 +62,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	if !ok {
 		return in, env.ErrEVNCoinNet
 	}
+
 	if !coins.CheckSupportNet(v) {
 		return in, env.ErrEVNCoinNetValue
 	}
@@ -109,7 +109,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	}
 
 	// todo: should check,maybe can caculate from chain
-	gasPrice := uint64(1)
+	gasPrice := uint64(2)
 	nonce := uint64(0)
 	genesisID := []byte{}
 
@@ -154,10 +154,29 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 	var txState *v1.TransactionState
 
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
-		txState, err = c.SubmitCoinTransaction(info.TxData)
-		if err != nil {
-			return true, err
+		if info.SpawnTx != nil {
+			txState, err = c.SubmitCoinTransaction(info.SpawnTx.Raw)
+			if err != nil {
+				return true, nil
+			}
+			txState, tx, err := c.TransactionState(info.SpawnTx.ID[:], true)
+			if err != nil {
+				return true, nil
+			}
+			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
+				return false, smh.ErrSmlTxWrong
+			}
+			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_PROCESSED {
+				return false, smh.ErrSmlWaitSpawnFinish
+			}
+			info.SpawnTx = nil
 		}
+
+		txState, err = c.SubmitCoinTransaction(info.SpendTx.Raw)
+		if err != nil {
+			return true, nil
+		}
+
 		return false, nil
 	})
 
@@ -181,8 +200,9 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 
 	client := smh.Client()
 	var txState *v1.TransactionState
+	var tx *v1.Transaction
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
-		txState, _, err = c.TransactionState([]byte(info.TxID), false)
+		txState, tx, err = c.TransactionState([]byte(info.TxID), false)
 		if err != nil {
 			return true, err
 		}
@@ -193,26 +213,15 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return in, err
 	}
 
-	// todo: should check
-	if txState == nil || (txState.State == v1.TransactionState_TRANSACTION_STATE_MESH ||
-		txState.State == v1.TransactionState_TRANSACTION_STATE_MEMPOOL) {
-		return in, env.ErrWaitMessageOnChain
+	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
+		return in, smh.ErrSmlTxWrong
 	}
 
-	if txState != nil && (txState.State == v1.TransactionState_TRANSACTION_STATE_UNSPECIFIED ||
-		txState.State == v1.TransactionState_TRANSACTION_STATE_REJECTED ||
-		txState.State == v1.TransactionState_TRANSACTION_STATE_CONFLICTING ||
-		txState.State == v1.TransactionState_TRANSACTION_STATE_INSUFFICIENT_FUNDS) {
-		sResp := &ct.SyncResponse{}
-		sResp.ExitCode = -1
-		out, mErr := json.Marshal(sResp)
-		if mErr != nil {
-			return in, mErr
-		}
-		return out, fmt.Errorf("%v,%v", smh.SmhTransactionFailed, err)
+	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_PROCESSED {
+		return in, smh.ErrSmlWaitSpawnFinish
 	}
 
-	if txState != nil && txState.State == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
+	if txState.State == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
 		sResp := &ct.SyncResponse{}
 		sResp.ExitCode = 0
 		out, err := json.Marshal(sResp)

@@ -27,13 +27,23 @@ var (
 	ErrSmhBlockNotFound = errors.New("not found confirmed block in spacemesh chain")
 	// ErrSmlSignatureWrong ..
 	ErrSmlSignatureWrong = errors.New("spacemesh signature is wrong or failed")
+	// ErrSmlTxWrong ..
+	ErrSmlTxWrong = errors.New("spacemesh transaction is wrong or failed")
+	// ErrSmlWaitSpawnFinish ..
+	ErrSmlWaitSpawnFinish = errors.New("wait spwan transaction finish")
+	// ErrSmlWaitSpendFinish ..
+	ErrSmlWaitSpendFinish = errors.New("wait spend transaction finish")
 )
 
 var (
-	SmhTransactionFailed = `spacemesh transaction failed`
-	lamportsLow          = `Transfer: insufficient lamports`
-	stopErrMsg           = []string{lamportsLow, SmhTransactionFailed}
-	spacemeshToken       = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
+	lamportsLow = `Transfer: insufficient lamports`
+	stopErrMsg  = []string{
+		lamportsLow,
+		ErrSmhBlockNotFound.Error(),
+		ErrSmlSignatureWrong.Error(),
+		ErrSmlTxWrong.Error(),
+	}
+	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
 )
 
 func init() {

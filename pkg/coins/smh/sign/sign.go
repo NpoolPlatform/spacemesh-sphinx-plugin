@@ -1,17 +1,11 @@
 package sign
 
 import (
-	"bytes"
 	"context"
-	"crypto/ed25519"
 	"encoding/json"
 	"math/big"
 
 	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
-	"github.com/spacemeshos/go-scale"
-	"github.com/spacemeshos/go-spacemesh/genvm/sdk"
-	tplWallet "github.com/spacemeshos/go-spacemesh/genvm/templates/wallet"
-	"github.com/spacemeshos/go-spacemesh/hash"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/oss"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
@@ -21,8 +15,8 @@ import (
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"
 	"github.com/spacemeshos/go-spacemesh/common/types"
-	"github.com/spacemeshos/go-spacemesh/genvm/core"
-	"github.com/spacemeshos/go-spacemesh/signing"
+	"github.com/spacemeshos/go-spacemesh/genvm/sdk"
+	"github.com/spacemeshos/go-spacemesh/genvm/sdk/wallet"
 )
 
 func init() {
@@ -90,10 +84,12 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	if err != nil {
 		return nil, err
 	}
-	signer, err := signing.NewEdSigner(signing.WithPrivateKey(pk))
+
+	acc, err := account.CreateAccountFromHexPri(string(pk), "")
 	if err != nil {
 		return nil, err
 	}
+	signer := acc.GetSigner()
 
 	toAddr, err := types.StringToAddress(info.BaseInfo.To)
 	if err != nil {
@@ -105,44 +101,37 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		log.Warnf("transafer spacemesh amount not accuracy: from %v-> to %v", info.BaseInfo.Value, amount)
 	}
 
-	payload := core.Payload{}
-	payload.GasPrice = info.GasPrice
-	payload.Nonce = info.Nonce
+	_out := smh.BroadcastRequest{}
 
-	args := tplWallet.SpendArguments{}
-	args.Destination = toAddr
-	args.Amount = amount
-
-	tx := &types.Transaction{TxHeader: &types.TxHeader{}}
-	spawnargs := tplWallet.SpawnArguments{}
-	copy(spawnargs.PublicKey[:], signer.PublicKey().PublicKey)
-	principal := core.ComputePrincipal(tplWallet.TemplateAddress, &spawnargs)
-
-	_tx := encode(&sdk.TxVersion, &principal, &sdk.MethodSpend, &payload, &args)
-	hh := hash.Sum(info.GenesisID, _tx)
-	sig := ed25519.Sign(signer.PrivateKey(), hh[:])
-	_tx = append(_tx, sig...)
-	tx.RawTx = types.NewRawTx(_tx)
-	tx.MaxSpend = 1
-
-	// todo: not sure,please check
-	// serializedTx, err := codec.Encode(tx)
-
-	_out := smh.BroadcastRequest{
-		TxData: tx.Raw,
+	spendTxNonce := info.Nonce
+	if spendTxNonce == 0 {
+		spawnTx := types.NewRawTx(
+			wallet.SelfSpawn(
+				signer.PrivateKey(),
+				spendTxNonce,
+				sdk.WithGenesisID(GenesisIDToH20(info.GenesisID)),
+				sdk.WithGasPrice(info.GasPrice)))
+		_out.SpawnTx = &spawnTx
+		spendTxNonce++
 	}
 
+	spendTx := types.NewRawTx(
+		wallet.Spend(
+			signer.PrivateKey(),
+			toAddr,
+			amount,
+			spendTxNonce,
+			sdk.WithGenesisID(GenesisIDToH20(info.GenesisID)),
+			sdk.WithGasPrice(info.GasPrice)))
+
+	_out.SpendTx = &spendTx
 	return json.Marshal(_out)
 }
 
-func encode(fields ...scale.Encodable) []byte {
-	buf := bytes.NewBuffer(nil)
-	encoder := scale.NewEncoder(buf)
-	for _, field := range fields {
-		_, err := field.EncodeScale(encoder)
-		if err != nil {
-			panic(err)
-		}
-	}
-	return buf.Bytes()
+func GenesisIDToH20(genesisID []byte) types.Hash20 {
+	_genesisID := types.EmptyLayerHash
+	_genesisID.SetBytes(genesisID)
+	h20 := types.Hash20{}
+	copy(h20[:], _genesisID[12:])
+	return h20
 }

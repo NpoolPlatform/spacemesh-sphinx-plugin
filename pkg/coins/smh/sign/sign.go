@@ -4,11 +4,10 @@ import (
 	"bytes"
 	"context"
 	"crypto/ed25519"
-	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"math/big"
 
+	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 	"github.com/spacemeshos/go-scale"
 	"github.com/spacemeshos/go-spacemesh/genvm/sdk"
 	tplWallet "github.com/spacemeshos/go-spacemesh/genvm/templates/wallet"
@@ -54,35 +53,25 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 		return nil, env.ErrEVNCoinNetValue
 	}
 
-	// if account equal nil will panic
-	signer, err := signing.NewEdSigner()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	if info.ENV != coins.CoinNetMain {
-		types.DefaultTestAddressConfig()
+	var net string
+	if info.ENV == coins.CoinNetMain {
+		net = account.MainNet
 	} else {
-		types.DefaultAddressConfig()
+		net = account.TestNet
 	}
 
-	pubStr := signer.PublicKey().String()
-	priStr := hex.EncodeToString(signer.PrivateKey())
-	accStr := types.GenerateAddress([]byte(pubStr)).String()
-
-	fmt.Println(priStr)
-	fmt.Println(pubStr)
-	fmt.Println(accStr)
-	_out := ct.NewAccountResponse{
-		Address: accStr,
+	acc, err := account.CreateAccount(net)
+	if err != nil {
+		return nil, err
 	}
 
+	_out := ct.NewAccountResponse{Address: acc.Principal}
 	out, err = json.Marshal(_out)
 	if err != nil {
 		return nil, err
 	}
 
-	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+accStr, []byte(priStr), true)
+	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+acc.Principal, []byte(acc.Pri), true)
 	if err != nil {
 		return nil, err
 	}

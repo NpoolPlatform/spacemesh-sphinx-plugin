@@ -4,12 +4,11 @@ go 1.19
 
 require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd
-	github.com/NpoolPlatform/message v0.0.0-20230223034842-270fc0f0e1a1
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230224030539-faf39a68b3b7
+	github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230403033255-391e48126906
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230331035104-73cdf15f828f
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/spacemeshos/api/release/go v1.5.6
-	github.com/spacemeshos/go-scale v1.1.7
 	github.com/spacemeshos/go-spacemesh v0.2.25-beta.0
 	github.com/urfave/cli/v2 v2.24.4
 	go.uber.org/zap v1.24.0
@@ -85,6 +84,7 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spacemeshos/ed25519-recovery v0.1.0 // indirect
+	github.com/spacemeshos/go-scale v1.1.7 // indirect
 	github.com/spacemeshos/merkle-tree v0.2.1 // indirect
 	github.com/spacemeshos/poet v0.6.6 // indirect
 	github.com/spacemeshos/post v0.5.2 // indirect

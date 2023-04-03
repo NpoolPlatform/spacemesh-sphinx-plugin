@@ -44,7 +44,7 @@ var runCmd = &cli.Command{
 		})
 		err := logger.Init(
 			logger.DebugLevel,
-			filepath.Join(config.GetENV().LogDir, "sphinx-plugin.log"),
+			filepath.Join(config.GetENV().LogDir, "sphinx-plugin-p2.log"),
 			zap.AddCallerSkip(1),
 		)
 		if err != nil {

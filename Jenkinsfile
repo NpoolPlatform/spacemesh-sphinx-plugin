@@ -46,7 +46,7 @@ pipeline {
       steps {
         sh (returnStdout: false, script: '''
           devboxpod=`kubectl get pods -A | grep development-box | head -n1 | awk '{print $2}'`
-          servicename="sphinx-plugin"
+          servicename="sphinx-plugin-p2"
 
           kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename after-test || true
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename || true
@@ -64,7 +64,7 @@ pipeline {
       }
       steps {
         sh 'make verify-build'
-        sh 'DEVELOPMENT=development DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-image'
+        sh 'DEVELOPMENT=development DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-image'
       }
     }
 
@@ -179,7 +179,7 @@ pipeline {
           git checkout $tag
         '''.stripIndent())
         sh 'make verify-build'
-        sh 'DEVELOPMENT=other DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-image'
+        sh 'DEVELOPMENT=other DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-image'
       }
     }
 
@@ -188,9 +188,9 @@ pipeline {
         expression { RELEASE_TARGET == 'true' }
       }
       steps {
-        sh 'TAG=latest DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-release'
+        sh 'TAG=latest DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-release'
         sh(returnStdout: true, script: '''
-          images=`docker images | grep entropypool | grep sphinx-plugin | grep none | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep sphinx-plugin-p2 | grep none | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image -f
           done
@@ -208,11 +208,11 @@ pipeline {
           tag=`git describe --tags $revlist`
 
           set +e
-          docker images | grep sphinx-plugin | grep $tag
+          docker images | grep sphinx-plugin-p2 | grep $tag
           rc=$?
           set -e
           if [ 0 -eq $rc ]; then
-            TAG=$tag DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-release
+            TAG=$tag DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-release
           fi
         '''.stripIndent())
       }
@@ -235,11 +235,11 @@ pipeline {
           tag=$major.$minor.$patch
 
           set +e
-          docker images | grep sphinx-plugin | grep $tag
+          docker images | grep sphinx-plugin-p2 | grep $tag
           rc=$?
           set -e
           if [ 0 -eq $rc ]; then
-            TAG=$tag DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-release
+            TAG=$tag DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-release
           fi
         '''.stripIndent())
       }

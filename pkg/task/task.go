@@ -73,7 +73,7 @@ func (c *pluginClient) closeProxyClient() {
 		log.Info("close proxy conn and client")
 		if c != nil {
 			close(c.exitChan)
-			if c.proxyClient != nil {
+			if !(c.proxyClient == nil) {
 				if err := c.proxyClient.CloseSend(); err != nil {
 					log.Warnf("close proxy conn and client error: %v", err)
 				}

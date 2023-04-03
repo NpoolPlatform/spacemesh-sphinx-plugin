@@ -63,6 +63,7 @@ func (sClients *SClients) WithClient(ctx context.Context, fn func(ctx context.Co
 		}
 
 		retry, apiErr = fn(ctx, smhClient)
+		smhClient.Close()
 		if !retry {
 			return apiErr
 		}

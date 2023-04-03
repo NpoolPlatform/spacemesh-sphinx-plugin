@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"math/big"
+	"strings"
 
 	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 
@@ -91,6 +92,12 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	}
 	signer := acc.GetSigner()
 
+	if strings.HasPrefix(info.BaseInfo.To, account.TestNet) {
+		types.DefaultAddressConfig().NetworkHRP = account.TestNet
+	} else {
+		types.DefaultAddressConfig().NetworkHRP = account.MainNet
+	}
+
 	toAddr, err := types.StringToAddress(info.BaseInfo.To)
 	if err != nil {
 		return nil, err
@@ -125,6 +132,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 			sdk.WithGasPrice(info.GasPrice)))
 
 	_out.SpendTx = &spendTx
+
 	return json.Marshal(_out)
 }
 

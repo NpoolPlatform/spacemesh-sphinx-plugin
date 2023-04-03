@@ -1,4 +1,4 @@
-[![Test](https://github.com/NpoolPlatform/sphinx-plugin-p3/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/NpoolPlatform/sphinx-plugin-p3/actions/workflows/main.yml)
+[![Test](https://github.com/NpoolPlatform/sphinx-plugin-p2/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/NpoolPlatform/sphinx-plugin-p2/actions/workflows/main.yml)
 
 支持币种：IronFish
 

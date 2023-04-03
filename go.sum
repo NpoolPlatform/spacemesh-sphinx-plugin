@@ -49,8 +49,8 @@ github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402 h1:8KdvoVdua
 github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402/go.mod h1:siMqIrLuxDkKaqlPyeNSXCfvGsiEwmDBoEqgXMXFyjc=
 github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230403033255-391e48126906 h1:1v75EH3JiwHa+882kk/26nYjNM54yvuXhxvVG8sW/sk=
 github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230403033255-391e48126906/go.mod h1:810PHAFQctWdVvU8QCuSe6CZPl/Nr82RhATv+mNgm4Q=
-github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230331035104-73cdf15f828f h1:NXR0Jx45e1vw4TNP8GLApXUuK7C4Y8CV+a7T5g/sZA0=
-github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230331035104-73cdf15f828f/go.mod h1:bq9RrawXWaHiFXKuKViEwOPT+RuQrCzXGg4jZvL1QP0=
+github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31 h1:9owxYzdYBMwahvwvMt46OJ2Wua13NkX/jjXuPbMGt6k=
+github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31/go.mod h1:bq9RrawXWaHiFXKuKViEwOPT+RuQrCzXGg4jZvL1QP0=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/Shonminh/apollo-client v0.4.0 h1:AXGp4wOahrEKjheMXehgsG9B8dEfLQHttRLHeEefvus=

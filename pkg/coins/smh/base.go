@@ -23,6 +23,8 @@ var (
 )
 
 var (
+	// ErrSmhNodeNotSynced ..
+	ErrSmhNodeNotSynced = errors.New("spacemesh node not synced")
 	// ErrSmhBlockNotFound ..
 	ErrSmhBlockNotFound = errors.New("not found confirmed block in spacemesh chain")
 	// ErrSmlSignatureWrong ..

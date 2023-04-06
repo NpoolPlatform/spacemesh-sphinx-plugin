@@ -38,6 +38,15 @@ func (sClients SClients) GetNode(ctx context.Context, endpointmgr *endpoints.Man
 		return nil, err
 	}
 
+	nodeStatus, err := smhClient.NodeStatus()
+	if err != nil {
+		return nil, err
+	}
+
+	if !nodeStatus.IsSynced {
+		return nil, ErrSmhNodeNotSynced
+	}
+
 	return smhClient, nil
 }
 

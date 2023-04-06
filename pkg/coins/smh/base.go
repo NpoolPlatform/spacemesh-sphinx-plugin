@@ -23,6 +23,8 @@ var (
 )
 
 var (
+	// ErrSmhAddressWrong ..
+	ErrSmhAddressWrong = errors.New("from or to address wrong")
 	// ErrSmhNodeNotSynced ..
 	ErrSmhNodeNotSynced = errors.New("spacemesh node not synced")
 	// ErrSmhBlockNotFound ..
@@ -41,9 +43,11 @@ var (
 	lamportsLow = `Transfer: insufficient lamports`
 	stopErrMsg  = []string{
 		lamportsLow,
+		ErrSmhAddressWrong.Error(),
 		ErrSmhBlockNotFound.Error(),
 		ErrSmlSignatureWrong.Error(),
 		ErrSmlTxWrong.Error(),
+		ErrSmhNodeNotSynced.Error(),
 	}
 	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
 )

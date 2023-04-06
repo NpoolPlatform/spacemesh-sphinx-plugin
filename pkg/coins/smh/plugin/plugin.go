@@ -106,6 +106,16 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 		return in, err
 	}
 
+	_, err = types.StringToAddress(info.From)
+	if err != nil {
+		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.From)
+	}
+
+	_, err = types.StringToAddress(info.To)
+	if err != nil {
+		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.To)
+	}
+
 	if !coins.CheckSupportNet(info.ENV) {
 		return nil, env.ErrEVNCoinNetValue
 	}

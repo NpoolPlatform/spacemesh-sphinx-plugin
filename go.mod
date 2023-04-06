@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd
 	github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230403033255-391e48126906
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230224030539-faf39a68b3b7
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/spacemeshos/api/release/go v1.5.6

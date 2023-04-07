@@ -3,6 +3,7 @@ package sign
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/big"
 	"strings"
 
@@ -81,15 +82,21 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return nil, err
 	}
 
+	toAddr, err := types.StringToAddress(info.BaseInfo.To)
+	if err != nil {
+		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.To)
+	}
+
 	pk, err := oss.GetObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+info.BaseInfo.From, true)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.From)
 	}
 
 	acc, err := account.CreateAccountFromHexPri(string(pk), "")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.From)
 	}
+
 	signer := acc.GetSigner()
 
 	if strings.HasPrefix(info.BaseInfo.To, account.TestNet) {
@@ -98,10 +105,6 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		types.DefaultAddressConfig().NetworkHRP = account.MainNet
 	}
 
-	toAddr, err := types.StringToAddress(info.BaseInfo.To)
-	if err != nil {
-		return nil, err
-	}
 	amount, accuracy := smh.ToSmidge(info.BaseInfo.Value)
 
 	if accuracy != big.Exact {

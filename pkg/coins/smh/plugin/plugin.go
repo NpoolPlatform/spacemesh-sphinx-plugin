@@ -108,6 +108,10 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 		return in, err
 	}
 
+	if !coins.CheckSupportNet(info.ENV) {
+		return nil, env.ErrEVNCoinNetValue
+	}
+
 	if strings.HasPrefix(info.From, account.TestNet) {
 		types.DefaultAddressConfig().NetworkHRP = account.TestNet
 	} else {
@@ -122,10 +126,6 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	_, err = types.StringToAddress(info.To)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.To)
-	}
-
-	if !coins.CheckSupportNet(info.ENV) {
-		return nil, env.ErrEVNCoinNetValue
 	}
 
 	// todo: should check,maybe can caculate from chain

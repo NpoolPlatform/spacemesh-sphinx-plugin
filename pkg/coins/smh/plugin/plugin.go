@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/big"
+	"strings"
 
+	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 	smhclient "github.com/NpoolSpacemesh/spacemesh-plugin/client"
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -104,6 +106,12 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	info := ct.BaseInfo{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
+	}
+
+	if strings.HasPrefix(info.From, account.TestNet) {
+		types.DefaultAddressConfig().NetworkHRP = account.TestNet
+	} else {
+		types.DefaultAddressConfig().NetworkHRP = account.MainNet
 	}
 
 	_, err = types.StringToAddress(info.From)

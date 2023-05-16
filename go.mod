@@ -12,8 +12,12 @@ require (
 	github.com/spacemeshos/go-spacemesh v0.2.25-beta.0
 	github.com/urfave/cli/v2 v2.24.4
 	go.uber.org/zap v1.24.0
-	google.golang.org/grpc v1.54.0
+	google.golang.org/grpc v1.55.0
 )
+
+replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230516110001-6e758546cfcd
+
+replace github.com/NpoolPlatform/message => github.com/NpoolPlatform/message v0.0.0-20230516092517-db9374403bf7
 
 require (
 	crawshaw.io/sqlite v0.3.3-0.20211227050848-2cdb5c1a86a1 // indirect
@@ -68,7 +72,7 @@ require (
 	github.com/jhump/protoreflect v1.12.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/minio/sha256-simd v1.0.0 // indirect
@@ -107,7 +111,7 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
+	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect

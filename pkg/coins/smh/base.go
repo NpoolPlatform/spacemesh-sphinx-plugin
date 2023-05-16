@@ -13,6 +13,11 @@ import (
 const (
 	// There are 10^12 SMIDGE in one SMH.
 	SmidgePreSmh uint64 = 1000000000000
+
+	ChainType       = sphinxplugin.ChainType_Spacemesh
+	ChainNativeUnit = "SMH"
+	ChainAtomicUnit = "SMD"
+	ChainUnitExp    = 12
 )
 
 var (
@@ -53,6 +58,12 @@ var (
 )
 
 func init() {
+	// set chain info
+	spacemeshToken.ChainType = ChainType
+	spacemeshToken.ChainNativeUnit = ChainNativeUnit
+	spacemeshToken.ChainAtomicUnit = ChainAtomicUnit
+	spacemeshToken.ChainUnitExp = ChainUnitExp
+
 	spacemeshToken.Waight = 100
 	spacemeshToken.Net = coins.CoinNetMain
 	spacemeshToken.Contract = spacemeshToken.OfficialContract

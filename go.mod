@@ -15,9 +15,9 @@ require (
 	google.golang.org/grpc v1.55.0
 )
 
-replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230516110001-6e758546cfcd
+replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230530085853-ded787a7d150
 
-replace github.com/NpoolPlatform/message => github.com/NpoolPlatform/message v0.0.0-20230516092517-db9374403bf7
+replace github.com/NpoolPlatform/message => github.com/NpoolPlatform/message v0.0.0-20230530084451-544dbcd25a5a
 
 require (
 	crawshaw.io/sqlite v0.3.3-0.20211227050848-2cdb5c1a86a1 // indirect

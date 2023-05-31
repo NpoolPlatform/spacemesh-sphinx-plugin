@@ -15,10 +15,13 @@ const (
 	// There are 10^12 SMIDGE in one SMH.
 	SmidgePreSmh uint64 = 1000000000000
 
-	ChainType       = sphinxplugin.ChainType_Spacemesh
-	ChainNativeUnit = "SMH"
-	ChainAtomicUnit = "SMD"
-	ChainUnitExp    = 12
+	ChainType           = sphinxplugin.ChainType_Spacemesh
+	ChainNativeUnit     = "SMH"
+	ChainAtomicUnit     = "SMD"
+	ChainUnitExp        = 12
+	ChainID             = "1" //TODO:not sure,beacause the chain have no mainnet
+	ChainNickname       = "spacemesh"
+	ChainNativeCoinName = "spacemesh"
 )
 
 var (
@@ -55,7 +58,7 @@ var (
 		ErrSmlTxWrong.Error(),
 		ErrSmhNodeNotSynced.Error(),
 	}
-	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
+	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
 )
 
 func init() {
@@ -65,6 +68,9 @@ func init() {
 	spacemeshToken.ChainAtomicUnit = ChainAtomicUnit
 	spacemeshToken.ChainUnitExp = ChainUnitExp
 	spacemeshToken.GasType = v1.GasType_GasUnsupported
+	spacemeshToken.ChainID = ChainID
+	spacemeshToken.ChainNickname = ChainNickname
+	spacemeshToken.ChainNativeCoinName = ChainNativeCoinName
 
 	spacemeshToken.Waight = 100
 	spacemeshToken.Net = coins.CoinNetMain

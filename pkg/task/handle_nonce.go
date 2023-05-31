@@ -34,13 +34,13 @@ func nonceWorker(name string, interval time.Duration) {
 				return
 			}
 
-			coinNetwork, coinType, err := env.CoinInfo()
+			coinInfo, err := env.GetCoinInfo()
 			if err != nil {
 				errorf(name, "get coin info from env error: %v", err)
 				return
 			}
 
-			_coinType := coins.CoinStr2CoinType(coinNetwork, coinType)
+			_coinType := coins.CoinStr2CoinType(coinInfo.NetworkType, coinInfo.CoinType)
 			tState := sphinxproxy.TransactionState_TransactionStateWait
 			pClient := sphinxproxy.NewSphinxProxyClient(conn)
 
@@ -49,7 +49,7 @@ func nonceWorker(name string, interval time.Duration) {
 			defer cancel()
 
 			transInfos, err := pClient.GetTransactions(ctx, &sphinxproxy.GetTransactionsRequest{
-				ENV:              coinNetwork,
+				ENV:              coinInfo.NetworkType,
 				CoinType:         _coinType,
 				TransactionState: tState,
 			})

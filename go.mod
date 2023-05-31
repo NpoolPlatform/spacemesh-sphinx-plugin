@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd
-	github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230407104706-016e0172f58b
+	github.com/NpoolPlatform/message v0.0.0-20230531060256-dedb46122232
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230531065048-e6be836dc80c
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/spacemeshos/api/release/go v1.5.6
@@ -15,9 +15,9 @@ require (
 	google.golang.org/grpc v1.55.0
 )
 
-replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230530085853-ded787a7d150
+replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230531065048-e6be836dc80c
 
-replace github.com/NpoolPlatform/message => github.com/NpoolPlatform/message v0.0.0-20230530084451-544dbcd25a5a
+replace github.com/NpoolPlatform/message => github.com/NpoolPlatform/message v0.0.0-20230531060256-dedb46122232
 
 require (
 	crawshaw.io/sqlite v0.3.3-0.20211227050848-2cdb5c1a86a1 // indirect

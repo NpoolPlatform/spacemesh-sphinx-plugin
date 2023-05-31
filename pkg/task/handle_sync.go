@@ -35,12 +35,12 @@ func calcDuration() time.Duration {
 		return time.Duration(du) * time.Second
 	}
 
-	_coinNet, _coinType, err := env.CoinInfo()
+	coinInfo, err := env.GetCoinInfo()
 	if err != nil {
 		panic(fmt.Sprintf("task::synctx failed to read %v, %v", env.ENVCOINTYPE, err))
 	}
 
-	coinType := coins.CoinStr2CoinType(_coinNet, _coinType)
+	coinType := coins.CoinStr2CoinType(coinInfo.NetworkType, coinInfo.CoinType)
 	return coins.SyncTime[coinType]
 }
 
@@ -55,13 +55,13 @@ func syncTxWorker(name string, _interval time.Duration) {
 				return
 			}
 
-			coinNetwork, coinType, err := env.CoinInfo()
+			coinInfo, err := env.GetCoinInfo()
 			if err != nil {
 				errorf(name, "get coin info from env error: %v", err)
 				return
 			}
 
-			_coinType := coins.CoinStr2CoinType(coinNetwork, coinType)
+			_coinType := coins.CoinStr2CoinType(coinInfo.NetworkType, coinInfo.CoinType)
 			tState := sphinxproxy.TransactionState_TransactionStateSync
 
 			pClient := sphinxproxy.NewSphinxProxyClient(conn)
@@ -70,7 +70,7 @@ func syncTxWorker(name string, _interval time.Duration) {
 			defer cancel()
 
 			transInfos, err := pClient.GetTransactions(ctx, &sphinxproxy.GetTransactionsRequest{
-				ENV:              coinNetwork,
+				ENV:              coinInfo.NetworkType,
 				CoinType:         _coinType,
 				TransactionState: tState,
 			})

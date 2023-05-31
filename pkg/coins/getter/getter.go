@@ -3,6 +3,7 @@ package getter
 import (
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
+	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
 
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 
@@ -17,7 +18,8 @@ func GetTokenInfo(name string) *coins.TokenInfo {
 	if !ok {
 		return nil
 	}
-	return _tokenInfo
+	tokenInfo := checkAndAddChainInfo(_tokenInfo)
+	return tokenInfo
 }
 
 func GetTokenInfos(coinType sphinxplugin.CoinType) map[string]*coins.TokenInfo {
@@ -25,9 +27,28 @@ func GetTokenInfos(coinType sphinxplugin.CoinType) map[string]*coins.TokenInfo {
 	if !ok {
 		return nil
 	}
+	for k, v := range tokenInfos {
+		tokenInfos[k] = checkAndAddChainInfo(v)
+	}
 	return tokenInfos
 }
 
+func checkAndAddChainInfo(token *coins.TokenInfo) *coins.TokenInfo {
+	if token.Net == coins.CoinNetMain {
+		return token
+	}
+	chainID, ok := env.LookupEnv(env.ENVCHAINID)
+	if !ok {
+		panic(env.ErrEVNChainID)
+	}
+	chainNickname, ok := env.LookupEnv(env.ENVCHAINNICKNAME)
+	if !ok {
+		panic(env.ErrEVNChainNickname)
+	}
+	token.ChainID = chainID
+	token.ChainNickname = chainNickname
+	return token
+}
 func GetTokenHandler(tokenType coins.TokenType, op register.OpType) (register.HandlerDef, error) {
 	if _, ok := register.TokenHandlers[tokenType]; !ok {
 		return nil, register.ErrTokenHandlerNotExist

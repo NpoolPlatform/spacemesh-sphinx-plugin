@@ -20,7 +20,7 @@ const (
 	ChainAtomicUnit = "SMD"
 	ChainUnitExp    = 12
 	// TODO:not sure,beacause the chain have no mainnet
-	ChainID             = "NA"
+	ChainID             = "N/A"
 	ChainNickname       = "Spacemesh"
 	ChainNativeCoinName = "spacemesh"
 )

@@ -154,6 +154,8 @@ func (c *pluginClient) register() {
 					ChainUnitExp:        tokenInfo.ChainUnitExp,
 					GasType:             tokenInfo.GasType,
 					ChainNativeCoinName: tokenInfo.ChainNativeCoinName,
+					ChainID:             tokenInfo.ChainID,
+					ChainNickname:       tokenInfo.ChainNickname,
 					Name:                tokenInfo.Name,
 					TransactionType:     sphinxproxy.TransactionType_RegisterCoin,
 					ENV:                 tokenInfo.Net,

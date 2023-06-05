@@ -49,6 +49,7 @@ func checkAndAddChainInfo(token *coins.TokenInfo) *coins.TokenInfo {
 	token.ChainNickname = chainNickname
 	return token
 }
+
 func GetTokenHandler(tokenType coins.TokenType, op register.OpType) (register.HandlerDef, error) {
 	if _, ok := register.TokenHandlers[tokenType]; !ok {
 		return nil, register.ErrTokenHandlerNotExist

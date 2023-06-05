@@ -15,11 +15,12 @@ const (
 	// There are 10^12 SMIDGE in one SMH.
 	SmidgePreSmh uint64 = 1000000000000
 
-	ChainType           = sphinxplugin.ChainType_Spacemesh
-	ChainNativeUnit     = "SMH"
-	ChainAtomicUnit     = "SMD"
-	ChainUnitExp        = 12
-	ChainID             = "1" //TODO:not sure,beacause the chain have no mainnet
+	ChainType       = sphinxplugin.ChainType_Spacemesh
+	ChainNativeUnit = "SMH"
+	ChainAtomicUnit = "SMD"
+	ChainUnitExp    = 12
+	//TODO:not sure,beacause the chain have no mainnet
+	ChainID             = "1"
 	ChainNickname       = "Spacemesh"
 	ChainNativeCoinName = "spacemesh"
 )

@@ -45,10 +45,10 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd h1:1ThvjABWDwKs7xFqHVkadk5rhdFa3uN1qr/SNIG56WE=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd/go.mod h1:/sor3E0i0XR8BaKInJwWC85aXLmbMFRNLdIuw+ed+ig=
-github.com/NpoolPlatform/message v0.0.0-20230531060256-dedb46122232 h1:FL5UgwlsCuchjCeWTzkIn6QqzEE6HUFN/cEboSgNHGY=
-github.com/NpoolPlatform/message v0.0.0-20230531060256-dedb46122232/go.mod h1:PxJpF0vSSOke+NJskbRBRQ2fK2K3SRe8zaEja+GxSHk=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230531065048-e6be836dc80c h1:cW3MDbKXUZDRgRVao3KVUoCi5oKTKEqmjzwc7w4YY7Y=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230531065048-e6be836dc80c/go.mod h1:905+f1JQ/cXsJ6NFsnF183LEft+vptxxbzoYNA+CBqo=
+github.com/NpoolPlatform/message v0.0.0-20230605075344-03a09d2c34b8 h1:kLdPyKgd5xU8Oa6EJk4zFn5MMtRFuEogQOv1URXGxBE=
+github.com/NpoolPlatform/message v0.0.0-20230605075344-03a09d2c34b8/go.mod h1:PxJpF0vSSOke+NJskbRBRQ2fK2K3SRe8zaEja+GxSHk=
+github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230606020627-c0f21d5e1a76 h1:2v65frozDIfOOVLFr6FYn8248QvfJ64TYerNnmablbA=
+github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230606020627-c0f21d5e1a76/go.mod h1:lvuLgc+vPk+gkb7masSLDm0s6RLixM2cnOV6ntslymk=
 github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31 h1:9owxYzdYBMwahvwvMt46OJ2Wua13NkX/jjXuPbMGt6k=
 github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31/go.mod h1:bq9RrawXWaHiFXKuKViEwOPT+RuQrCzXGg4jZvL1QP0=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=

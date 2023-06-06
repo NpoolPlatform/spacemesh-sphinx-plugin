@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"strings"
 
-	v1 "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
@@ -21,7 +21,6 @@ const (
 	ChainUnitExp    = 12
 	// TODO:not sure,beacause the chain have no mainnet
 	ChainID             = "N/A"
-	ChainNickname       = "Spacemesh"
 	ChainNativeCoinName = "spacemesh"
 )
 
@@ -68,9 +67,9 @@ func init() {
 	spacemeshToken.ChainNativeUnit = ChainNativeUnit
 	spacemeshToken.ChainAtomicUnit = ChainAtomicUnit
 	spacemeshToken.ChainUnitExp = ChainUnitExp
-	spacemeshToken.GasType = v1.GasType_GasUnsupported
+	spacemeshToken.GasType = basetypes.GasType_GasUnsupported
 	spacemeshToken.ChainID = ChainID
-	spacemeshToken.ChainNickname = ChainNickname
+	spacemeshToken.ChainNickname = ChainType.String()
 	spacemeshToken.ChainNativeCoinName = ChainNativeCoinName
 
 	spacemeshToken.Waight = 100

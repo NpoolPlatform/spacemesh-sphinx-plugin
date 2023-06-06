@@ -52,9 +52,11 @@ func RegisteTokenInfos(tokenInfos []*coins.TokenInfo) {
 func RegisteTokenInfo(tokenInfo *coins.TokenInfo) {
 	_tokenInfo := *tokenInfo
 	_tokenInfo.CoinType = coins.ToTestCoinType(_tokenInfo.CoinType)
+	_tokenInfo.ChainType = coins.ToTestChainType(_tokenInfo.ChainType)
 	_tokenInfo.Net = coins.CoinNetTest
 	_tokenInfo.Contract = ""
 	_tokenInfo.Name = fmt.Sprintf("%v%v", coins.TestPrefix, tokenInfo.Name)
+	_tokenInfo.ChainNativeCoinName = fmt.Sprintf("%v%v", coins.TestPrefix, tokenInfo.ChainNativeCoinName)
 	_tokenInfo.DisableRegiste = true
 	registeTokenInfo(tokenInfo)
 	registeTokenInfo(&_tokenInfo)

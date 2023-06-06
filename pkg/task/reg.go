@@ -65,11 +65,11 @@ func infof(prefix, template string, args ...interface{}) {
 }
 
 func setUpTokens() error {
-	coinNetwork, _coinType, err := env.CoinInfo()
+	coinInfo, err := env.GetCoinInfo()
 	if err != nil {
 		return err
 	}
-	coinType := coins.CoinStr2CoinType(coinNetwork, _coinType)
+	coinType := coins.CoinStr2CoinType(coinInfo.NetworkType, coinInfo.CoinType)
 	infos := getter.GetTokenInfos(coinType)
 	fn, err := getter.GetTokenNetHandler(coinType)
 	if err != nil {

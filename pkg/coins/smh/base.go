@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"strings"
 
+	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
@@ -13,6 +14,14 @@ import (
 const (
 	// There are 10^12 SMIDGE in one SMH.
 	SmidgePreSmh uint64 = 1000000000000
+
+	ChainType       = sphinxplugin.ChainType_Spacemesh
+	ChainNativeUnit = "SMH"
+	ChainAtomicUnit = "SMD"
+	ChainUnitExp    = 12
+	// TODO:not sure,beacause the chain have no mainnet
+	ChainID             = "N/A"
+	ChainNativeCoinName = "spacemesh"
 )
 
 var (
@@ -49,10 +58,20 @@ var (
 		ErrSmlTxWrong.Error(),
 		ErrSmhNodeNotSynced.Error(),
 	}
-	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: "spacemesh", OfficialContract: "spacemesh", TokenType: coins.Spacemesh}
+	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
 )
 
 func init() {
+	// set chain info
+	spacemeshToken.ChainType = ChainType
+	spacemeshToken.ChainNativeUnit = ChainNativeUnit
+	spacemeshToken.ChainAtomicUnit = ChainAtomicUnit
+	spacemeshToken.ChainUnitExp = ChainUnitExp
+	spacemeshToken.GasType = basetypes.GasType_GasUnsupported
+	spacemeshToken.ChainID = ChainID
+	spacemeshToken.ChainNickname = ChainType.String()
+	spacemeshToken.ChainNativeCoinName = ChainNativeCoinName
+
 	spacemeshToken.Waight = 100
 	spacemeshToken.Net = coins.CoinNetMain
 	spacemeshToken.Contract = spacemeshToken.OfficialContract

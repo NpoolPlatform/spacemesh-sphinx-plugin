@@ -4,15 +4,15 @@ go 1.19
 
 require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd
-	github.com/NpoolPlatform/message v0.0.0-20230331105746-d35da1f1c402
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230407104706-016e0172f58b
+	github.com/NpoolPlatform/message v0.0.0-20230605075344-03a09d2c34b8
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230606020627-c0f21d5e1a76
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230403102805-97bb7c63df31
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/spacemeshos/api/release/go v1.5.6
 	github.com/spacemeshos/go-spacemesh v0.2.25-beta.0
 	github.com/urfave/cli/v2 v2.24.4
 	go.uber.org/zap v1.24.0
-	google.golang.org/grpc v1.54.0
+	google.golang.org/grpc v1.55.0
 )
 
 require (
@@ -68,7 +68,7 @@ require (
 	github.com/jhump/protoreflect v1.12.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/minio/sha256-simd v1.0.0 // indirect
@@ -107,7 +107,7 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
+	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect

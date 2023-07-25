@@ -33,12 +33,12 @@ func (sClients SClients) GetNode(ctx context.Context, endpointmgr *endpoints.Man
 	defer cancel()
 
 	smhClient := client.NewClient(endpoint, false)
-	err = smhClient.Connect()
+	err = smhClient.Connect(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	nodeStatus, err := smhClient.NodeStatus()
+	nodeStatus, err := smhClient.NodeStatus(ctx)
 	if err != nil {
 		return nil, err
 	}

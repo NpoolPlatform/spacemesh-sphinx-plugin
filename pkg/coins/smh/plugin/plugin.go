@@ -5,9 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/big"
-	"strings"
 
-	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 	smhclient "github.com/NpoolSpacemesh/spacemesh-plugin/client"
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"
 	"github.com/spacemeshos/go-spacemesh/common/types"
@@ -78,7 +76,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	cli := smh.Client()
 	var accountState *v1.Account
 	err = cli.WithClient(ctx, func(_ctx context.Context, c *smhclient.Client) (bool, error) {
-		accountState, err = c.AccountState(v1.AccountId{Address: info.Address})
+		accountState, err = c.AccountState(ctx, v1.AccountId{Address: info.Address})
 		if err != nil || accountState == nil {
 			return true, err
 		}
@@ -113,12 +111,6 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 		return nil, env.ErrEVNCoinNetValue
 	}
 
-	if strings.HasPrefix(info.From, account.TestNet) {
-		types.DefaultAddressConfig().NetworkHRP = account.TestNet
-	} else {
-		types.DefaultAddressConfig().NetworkHRP = account.MainNet
-	}
-
 	_, err = types.StringToAddress(info.From)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.From)
@@ -136,16 +128,19 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 
 	client := smh.Client()
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
-		accState, err := c.AccountState(v1.AccountId{Address: info.From})
+		accState, err := c.AccountState(ctx, v1.AccountId{Address: info.From})
 		if err != nil {
-			return true, err
+			return false, err
 		}
+
+		_, err = c.AccountState(ctx, v1.AccountId{Address: info.To})
+		if err != nil {
+			return false, err
+		}
+
 		nonce = accState.StateProjected.Counter
-		genesisID, err = c.GetGenesisID()
-		if err != nil {
-			return true, err
-		}
-		return false, nil
+		genesisID, err = c.GetGenesisID(ctx)
+		return false, err
 	})
 	if err != nil {
 		return in, err
@@ -178,11 +173,11 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 	client := smh.Client()
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
 		if info.SpawnTx != nil {
-			txState, err = c.SubmitCoinTransaction(info.SpawnTx.Raw)
+			txState, err = c.SubmitCoinTransaction(ctx, info.SpawnTx.Raw)
 			if err != nil {
 				return true, nil
 			}
-			txState, tx, err := c.TransactionState(info.SpawnTx.ID[:], true)
+			txState, tx, err := c.TransactionState(ctx, info.SpawnTx.ID[:], true)
 			if err != nil {
 				return true, nil
 			}
@@ -200,7 +195,7 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 			info.SpawnTx = nil
 		}
 
-		txState, err = c.SubmitCoinTransaction(info.SpendTx.Raw)
+		txState, err = c.SubmitCoinTransaction(ctx, info.SpendTx.Raw)
 		if txState == nil {
 			return true, nil
 		}
@@ -235,7 +230,7 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	var tx *v1.Transaction
 	_txID := types.HexToHash32(info.TxID)
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
-		txState, tx, err = c.TransactionState(_txID.Bytes(), true)
+		txState, tx, err = c.TransactionState(ctx, _txID.Bytes(), true)
 		if err != nil {
 			return true, err
 		}

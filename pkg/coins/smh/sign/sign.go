@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/big"
-	"strings"
 
 	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 
@@ -49,25 +48,26 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 		return nil, env.ErrEVNCoinNetValue
 	}
 
-	var net string
+	var hrp string
+	// TODO: when sphinx-* support local network,will be changed
 	if info.ENV == coins.CoinNetMain {
-		net = account.MainNet
+		hrp = account.MainHRP
 	} else {
-		net = account.TestNet
+		hrp = account.StandaloneHRP
 	}
 
-	acc, err := account.CreateAccount(net)
+	acc, err := account.CreateAccount()
 	if err != nil {
 		return nil, err
 	}
 
-	_out := ct.NewAccountResponse{Address: acc.Principal}
+	_out := ct.NewAccountResponse{Address: acc.GetAddress(hrp).String()}
 	out, err = json.Marshal(_out)
 	if err != nil {
 		return nil, err
 	}
 
-	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+acc.Principal, []byte(acc.Pri), true)
+	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+acc.GetAddress("").String(), []byte(acc.Pri), true)
 	if err != nil {
 		return nil, err
 	}
@@ -82,12 +82,6 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return nil, err
 	}
 
-	if strings.HasPrefix(info.BaseInfo.To, account.TestNet) {
-		types.DefaultAddressConfig().NetworkHRP = account.TestNet
-	} else {
-		types.DefaultAddressConfig().NetworkHRP = account.MainNet
-	}
-
 	toAddr, err := types.StringToAddress(info.BaseInfo.To)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.To)
@@ -98,7 +92,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.From)
 	}
 
-	acc, err := account.CreateAccountFromHexPri(string(pk), "")
+	acc, err := account.CreateAccountFromHexPri(string(pk))
 	if err != nil {
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.From)
 	}

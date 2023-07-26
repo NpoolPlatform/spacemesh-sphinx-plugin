@@ -8,6 +8,7 @@ require (
 	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230606020627-c0f21d5e1a76
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230725102452-b8a8bf895666
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
+	github.com/shopspring/decimal v1.3.1
 	github.com/spacemeshos/api/release/go v1.16.0
 	github.com/spacemeshos/go-spacemesh v1.0.2
 	github.com/urfave/cli/v2 v2.24.4
@@ -98,6 +99,7 @@ require (
 	github.com/spf13/viper v1.16.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
+	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	github.com/zeebo/blake3 v0.2.3 // indirect
 	go.uber.org/atomic v1.11.0 // indirect

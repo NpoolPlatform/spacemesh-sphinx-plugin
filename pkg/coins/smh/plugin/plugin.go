@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/big"
 
 	smhclient "github.com/NpoolSpacemesh/spacemesh-plugin/client"
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"
@@ -89,7 +88,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 
 	balance := smh.ToSmh(accountState.StateProjected.GetBalance().GetValue())
 	f, exact := balance.Float64()
-	if exact != big.Exact {
+	if exact {
 		log.Warnf("wallet balance transfer warning balance from->to %v-%v", balance.String(), f)
 	}
 

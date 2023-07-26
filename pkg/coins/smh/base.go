@@ -9,11 +9,12 @@ import (
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
+	"github.com/shopspring/decimal"
 )
 
 const (
 	// There are 10^12 SMIDGE in one SMH.
-	SmidgePreSmh uint64 = 1000000000000
+	SmhExp int32 = -12
 
 	ChainType       = sphinxplugin.ChainType_Spacemesh
 	ChainNativeUnit = "SMH"
@@ -79,20 +80,12 @@ func init() {
 	register.RegisteTokenInfo(spacemeshToken)
 }
 
-func ToSmh(smidge uint64) *big.Float {
-	// Convert lamports to SMH:
-	return big.NewFloat(0).
-		Quo(
-			big.NewFloat(0).SetUint64(smidge),
-			big.NewFloat(0).SetUint64(SmidgePreSmh),
-		)
+func ToSmh(smidge uint64) decimal.Decimal {
+	return decimal.NewFromBigInt(big.NewInt(int64(smidge)), SmhExp)
 }
 
-func ToSmidge(value float64) (uint64, big.Accuracy) {
-	return big.NewFloat(0).Mul(
-		big.NewFloat(0).SetFloat64(value),
-		big.NewFloat(0).SetUint64(SmidgePreSmh),
-	).Uint64()
+func ToSmidge(value float64) uint64 {
+	return decimal.NewFromFloat(value).Shift(-SmhExp).BigInt().Uint64()
 }
 
 func TxFailErr(err error) bool {

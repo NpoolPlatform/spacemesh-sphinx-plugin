@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/big"
 
 	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 
@@ -13,7 +12,6 @@ import (
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/env"
-	"github.com/NpoolPlatform/sphinx-plugin/pkg/log"
 	ct "github.com/NpoolPlatform/sphinx-plugin/pkg/types"
 	"github.com/spacemeshos/go-spacemesh/common/types"
 	"github.com/spacemeshos/go-spacemesh/genvm/sdk"
@@ -60,14 +58,14 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	if err != nil {
 		return nil, err
 	}
-
-	_out := ct.NewAccountResponse{Address: acc.GetAddress(hrp).String()}
+	address := acc.GetAddress(hrp).String()
+	_out := ct.NewAccountResponse{Address: address}
 	out, err = json.Marshal(_out)
 	if err != nil {
 		return nil, err
 	}
 
-	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+acc.GetAddress("").String(), []byte(acc.Pri), true)
+	err = oss.PutObject(ctx, coins.GetS3KeyPrxfix(tokenInfo)+address, []byte(acc.Pri), true)
 	if err != nil {
 		return nil, err
 	}
@@ -98,12 +96,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	}
 
 	signer := acc.GetSigner()
-
-	amount, accuracy := smh.ToSmidge(info.BaseInfo.Value)
-
-	if accuracy != big.Exact {
-		log.Warnf("transafer spacemesh amount not accuracy: from %v-> to %v", info.BaseInfo.Value, amount)
-	}
+	amount := smh.ToSmidge(info.BaseInfo.Value)
 
 	_out := smh.BroadcastRequest{}
 

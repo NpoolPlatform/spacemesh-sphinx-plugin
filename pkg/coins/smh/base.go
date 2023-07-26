@@ -35,6 +35,8 @@ var (
 var (
 	// ErrSmhAddressWrong ..
 	ErrSmhAddressWrong = errors.New("from or to address wrong")
+	// ErrSmhInsufficient ..
+	ErrSmhInsufficient = errors.New("the balance of from-address is insufficient to pay amount and gas")
 	// ErrSmhNodeNotSynced ..
 	ErrSmhNodeNotSynced = errors.New("spacemesh node not synced")
 	// ErrSmhBlockNotFound ..
@@ -54,6 +56,7 @@ var (
 	stopErrMsg  = []string{
 		lamportsLow,
 		ErrSmhAddressWrong.Error(),
+		ErrSmhInsufficient.Error(),
 		ErrSmhBlockNotFound.Error(),
 		ErrSmlSignatureWrong.Error(),
 		ErrSmlTxWrong.Error(),

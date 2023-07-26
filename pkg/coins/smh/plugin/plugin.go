@@ -110,26 +110,21 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 		return nil, env.ErrEVNCoinNetValue
 	}
 
-	_, err = types.StringToAddress(info.From)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.From)
-	}
-
-	_, err = types.StringToAddress(info.To)
-	if err != nil {
-		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.To)
-	}
-
 	// todo: should check,maybe can caculate from chain
 	gasPrice := uint64(2)
+	estimateMaxGas := uint64(360000)
 	nonce := uint64(0)
 	genesisID := []byte{}
-
+	amount := smh.ToSmidge(info.Value)
 	client := smh.Client()
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
 		accState, err := c.AccountState(ctx, v1.AccountId{Address: info.From})
 		if err != nil {
 			return false, err
+		}
+
+		if accState.StateProjected.Balance.Value < amount+estimateMaxGas {
+			return false, smh.ErrSmhInsufficient
 		}
 
 		_, err = c.AccountState(ctx, v1.AccountId{Address: info.To})
@@ -144,7 +139,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	if err != nil {
 		return in, err
 	}
-
+	fmt.Println("nonce:", nonce)
 	_out := smh.SignMsgTx{
 		BaseInfo:  info,
 		GasPrice:  gasPrice,
@@ -188,10 +183,12 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
 				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmlTxWrong)
 			}
-			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_PROCESSED {
-				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmlWaitSpawnFinish)
+
+			if txState.GetState() == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
+				info.SpawnTx = nil
+			} else {
+				return true, smh.ErrSmlWaitSpawnFinish
 			}
-			info.SpawnTx = nil
 		}
 
 		txState, err = c.SubmitCoinTransaction(ctx, info.SpendTx.Raw)

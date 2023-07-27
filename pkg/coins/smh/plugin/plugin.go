@@ -166,10 +166,15 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 	client := smh.Client()
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
 		if info.SpawnTx != nil {
-			txState, err = c.SubmitCoinTransaction(ctx, info.SpawnTx.Raw)
-			if err != nil {
-				return true, nil
+			if !info.SpawnED {
+				txState, err = c.SubmitCoinTransaction(ctx, info.SpawnTx.Raw)
+				if err != nil {
+					return true, nil
+				}
+				info.SpawnED = true
+				return false, smh.ErrSmlWaitSpawnFinish
 			}
+
 			txState, tx, err := c.TransactionState(ctx, info.SpawnTx.ID[:], true)
 			if err != nil {
 				return true, nil
@@ -186,7 +191,7 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 			if txState.GetState() == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
 				info.SpawnTx = nil
 			} else {
-				return true, smh.ErrSmlWaitSpawnFinish
+				return false, smh.ErrSmlWaitSpawnFinish
 			}
 		}
 

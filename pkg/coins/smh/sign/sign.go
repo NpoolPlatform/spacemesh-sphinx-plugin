@@ -7,6 +7,7 @@ import (
 
 	"github.com/NpoolSpacemesh/spacemesh-plugin/account"
 
+	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	"github.com/NpoolPlatform/go-service-framework/pkg/oss"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
@@ -109,6 +110,8 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 				sdk.WithGenesisID(GenesisIDToH20(info.GenesisID)),
 				sdk.WithGasPrice(info.GasPrice)))
 		_out.SpawnTx = &spawnTx
+		_out.SpawnED = false
+		logger.Sugar().Info("spawn nooooooooooooooooonce:", spendTxNonce)
 		spendTxNonce++
 	}
 
@@ -120,7 +123,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 			spendTxNonce,
 			sdk.WithGenesisID(GenesisIDToH20(info.GenesisID)),
 			sdk.WithGasPrice(info.GasPrice)))
-
+	logger.Sugar().Info("spawn nooooooooooooooooonce:", spendTxNonce)
 	_out.SpendTx = &spendTx
 
 	return json.Marshal(_out)

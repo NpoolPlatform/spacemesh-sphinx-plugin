@@ -80,6 +80,15 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		return nil, err
 	}
 
+	hrp := ""
+	// TODO: when sphinx-* support local network,will be changed
+	if info.BaseInfo.ENV == coins.CoinNetMain {
+		hrp = account.MainHRP
+	} else {
+		hrp = account.StandaloneHRP
+	}
+	types.SetNetworkHRP(hrp)
+
 	toAddr, err := types.StringToAddress(info.BaseInfo.To)
 	if err != nil {
 		return nil, fmt.Errorf("%s, %s, address: %s", smh.ErrSmhAddressWrong, err, info.BaseInfo.To)

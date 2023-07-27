@@ -15,6 +15,5 @@ type SignMsgTx struct {
 
 type BroadcastRequest struct {
 	SpawnTx *types.RawTx `json:"spawn_tx"`
-	SpawnED bool
 	SpendTx *types.RawTx `json:"spend_tx"`
 }

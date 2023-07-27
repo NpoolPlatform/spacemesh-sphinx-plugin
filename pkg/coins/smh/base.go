@@ -13,13 +13,13 @@ import (
 )
 
 const (
-	// There are 10^12 SMIDGE in one SMH.
-	SmhExp int32 = -12
+	// There are 10^9 SMIDGE in one SMH.
+	SmhExp int32 = -9
 
 	ChainType       = sphinxplugin.ChainType_Spacemesh
 	ChainNativeUnit = "SMH"
 	ChainAtomicUnit = "SMD"
-	ChainUnitExp    = 12
+	ChainUnitExp    = 9
 	// TODO:not sure,beacause the chain have no mainnet
 	ChainID             = "N/A"
 	ChainNativeCoinName = "spacemesh"

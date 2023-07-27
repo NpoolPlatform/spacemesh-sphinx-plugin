@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	smhclient "github.com/NpoolSpacemesh/spacemesh-plugin/client"
 	v1 "github.com/spacemeshos/api/release/go/spacemesh/v1"
@@ -120,7 +121,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
 		accState, err := c.AccountState(ctx, v1.AccountId{Address: info.From})
 		if err != nil {
-			return false, err
+			return false, fmt.Errorf("%v, %v", smh.ErrSmhAddressWrong, err)
 		}
 
 		if accState.StateProjected.Balance.Value < amount+estimateMaxGas {
@@ -129,7 +130,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 
 		_, err = c.AccountState(ctx, v1.AccountId{Address: info.To})
 		if err != nil {
-			return false, err
+			return false, fmt.Errorf("%v, %v", smh.ErrSmhAddressWrong, err)
 		}
 
 		nonce = accState.StateProjected.Counter
@@ -165,14 +166,11 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 
 	client := smh.Client()
 	err = client.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
+		// if from is first spend,it need finish spawn
 		if info.SpawnTx != nil {
-			if !info.SpawnED {
-				txState, err = c.SubmitCoinTransaction(ctx, info.SpawnTx.Raw)
-				if err != nil {
-					return true, nil
-				}
-				info.SpawnED = true
-				return false, smh.ErrSmlWaitSpawnFinish
+			txState, err = c.SubmitCoinTransaction(ctx, info.SpawnTx.Raw)
+			if err != nil && !strings.Contains(err.Error(), "tx already exists") {
+				return true, err
 			}
 
 			txState, tx, err := c.TransactionState(ctx, info.SpawnTx.ID[:], true)

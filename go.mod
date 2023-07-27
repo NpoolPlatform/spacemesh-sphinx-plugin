@@ -12,6 +12,7 @@ require (
 	github.com/spacemeshos/api/release/go v1.16.0
 	github.com/spacemeshos/go-spacemesh v1.0.2
 	github.com/urfave/cli/v2 v2.24.4
+	github.com/web3eye-io/ironfish-go-sdk v0.0.0-20230523134712-be14a77e4bd1
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.56.2
 )

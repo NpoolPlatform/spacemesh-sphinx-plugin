@@ -14,7 +14,7 @@ import (
 
 const (
 	// There are 10^9 SMIDGE in one SMH.
-	SmhExp int32 = 9
+	SmhExp int32 = -9
 
 	ChainType       = sphinxplugin.ChainType_Spacemesh
 	ChainNativeUnit = "SMH"

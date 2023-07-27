@@ -139,7 +139,6 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	if err != nil {
 		return in, err
 	}
-	fmt.Println("nonce:", nonce)
 	_out := smh.SignMsgTx{
 		BaseInfo:  info,
 		GasPrice:  gasPrice,

@@ -93,11 +93,13 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 	)
 	tokenInfo = getter.GetTokenInfo(transInfo.GetName())
 	if tokenInfo == nil {
+		errorf(name, "cannot get token info: %v", transInfo.GetName())
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}
 	handler, err = getter.GetTokenHandler(tokenInfo.TokenType, coins_register.OpBroadcast)
 	if err != nil {
+		errorf(name, "cannot get token handler: %v - %v", tokenInfo.TokenType, coins_register.OpBroadcast)
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}
@@ -106,7 +108,7 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 		goto done
 	}
 	if getter.Abort(tokenInfo.CoinType, err) {
-		warnf(name, "broadcase transaction: %v error: %v stop",
+		warnf(name, "broadcast transaction: %v error: %v stop",
 			transInfo.GetTransactionID(),
 			err,
 		)
@@ -114,7 +116,7 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 		goto done
 	}
 
-	errorf(name, "broadcase transaction: %v error: %v retry",
+	errorf(name, "broadcast transaction: %v error: %v retry",
 		transInfo.GetTransactionID(),
 		err,
 	)

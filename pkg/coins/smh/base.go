@@ -9,16 +9,17 @@ import (
 	"github.com/NpoolPlatform/message/npool/sphinxplugin"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/register"
 	"github.com/NpoolPlatform/sphinx-plugin/pkg/coins"
+	"github.com/shopspring/decimal"
 )
 
 const (
-	// There are 10^12 SMIDGE in one SMH.
-	SmidgePreSmh uint64 = 1000000000000
+	// There are 10^9 SMIDGE in one SMH.
+	SmhExp int32 = -9
 
 	ChainType       = sphinxplugin.ChainType_Spacemesh
 	ChainNativeUnit = "SMH"
 	ChainAtomicUnit = "SMD"
-	ChainUnitExp    = 12
+	ChainUnitExp    = 9
 	// TODO:not sure,beacause the chain have no mainnet
 	ChainID             = "N/A"
 	ChainNativeCoinName = "spacemesh"
@@ -34,6 +35,8 @@ var (
 var (
 	// ErrSmhAddressWrong ..
 	ErrSmhAddressWrong = errors.New("from or to address wrong")
+	// ErrSmhInsufficient ..
+	ErrSmhInsufficient = errors.New("the balance of from-address is insufficient to pay amount and gas")
 	// ErrSmhNodeNotSynced ..
 	ErrSmhNodeNotSynced = errors.New("spacemesh node not synced")
 	// ErrSmhBlockNotFound ..
@@ -53,12 +56,13 @@ var (
 	stopErrMsg  = []string{
 		lamportsLow,
 		ErrSmhAddressWrong.Error(),
+		ErrSmhInsufficient.Error(),
 		ErrSmhBlockNotFound.Error(),
 		ErrSmlSignatureWrong.Error(),
 		ErrSmlTxWrong.Error(),
 		ErrSmhNodeNotSynced.Error(),
 	}
-	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
+	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: ChainUnitExp, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
 )
 
 func init() {
@@ -79,20 +83,12 @@ func init() {
 	register.RegisteTokenInfo(spacemeshToken)
 }
 
-func ToSmh(smidge uint64) *big.Float {
-	// Convert lamports to SMH:
-	return big.NewFloat(0).
-		Quo(
-			big.NewFloat(0).SetUint64(smidge),
-			big.NewFloat(0).SetUint64(SmidgePreSmh),
-		)
+func ToSmh(smidge uint64) decimal.Decimal {
+	return decimal.NewFromBigInt(big.NewInt(int64(smidge)), SmhExp)
 }
 
-func ToSmidge(value float64) (uint64, big.Accuracy) {
-	return big.NewFloat(0).Mul(
-		big.NewFloat(0).SetFloat64(value),
-		big.NewFloat(0).SetUint64(SmidgePreSmh),
-	).Uint64()
+func ToSmidge(value float64) uint64 {
+	return decimal.NewFromFloat(value).Shift(-SmhExp).BigInt().Uint64()
 }
 
 func TxFailErr(err error) bool {

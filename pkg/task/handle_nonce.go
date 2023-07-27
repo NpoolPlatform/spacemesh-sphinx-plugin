@@ -93,12 +93,14 @@ func nonce(ctx context.Context, name string, transInfo *sphinxproxy.TransactionI
 
 	tokenInfo = getter.GetTokenInfo(transInfo.GetName())
 	if tokenInfo == nil {
+		errorf(name, "cannot get token info for: %v", transInfo.GetName())
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}
 
 	handler, err = getter.GetTokenHandler(tokenInfo.TokenType, coins_register.OpPreSign)
 	if err != nil {
+		errorf(name, "cannot get token handler: %v - %v ", tokenInfo.TokenType, coins_register.OpPreSign)
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}
@@ -118,7 +120,6 @@ func nonce(ctx context.Context, name string, transInfo *sphinxproxy.TransactionI
 	if err == nil {
 		goto done
 	}
-
 	if getter.Abort(tokenInfo.CoinType, err) {
 		errorf(name,
 			"pre sign transaction: %v error: %v stop",

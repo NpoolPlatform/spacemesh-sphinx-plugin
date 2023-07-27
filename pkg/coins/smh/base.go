@@ -62,7 +62,7 @@ var (
 		ErrSmlTxWrong.Error(),
 		ErrSmhNodeNotSynced.Error(),
 	}
-	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: 12, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
+	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: ChainUnitExp, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}
 )
 
 func init() {

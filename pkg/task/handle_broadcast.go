@@ -93,11 +93,13 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 	)
 	tokenInfo = getter.GetTokenInfo(transInfo.GetName())
 	if tokenInfo == nil {
+		errorf(name, "cannot get token info: %v", transInfo.GetName())
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}
 	handler, err = getter.GetTokenHandler(tokenInfo.TokenType, coins_register.OpBroadcast)
 	if err != nil {
+		errorf(name, "cannot get token handler: %v - %v", tokenInfo.TokenType, coins_register.OpBroadcast)
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}

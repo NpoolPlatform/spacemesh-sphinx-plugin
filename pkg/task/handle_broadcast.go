@@ -108,7 +108,7 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 		goto done
 	}
 	if getter.Abort(tokenInfo.CoinType, err) {
-		warnf(name, "broadcase transaction: %v error: %v stop",
+		warnf(name, "broadcast transaction: %v error: %v stop",
 			transInfo.GetTransactionID(),
 			err,
 		)
@@ -116,7 +116,7 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 		goto done
 	}
 
-	errorf(name, "broadcase transaction: %v error: %v retry",
+	errorf(name, "broadcast transaction: %v error: %v retry",
 		transInfo.GetTransactionID(),
 		err,
 	)

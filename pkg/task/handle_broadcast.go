@@ -99,7 +99,9 @@ func broadcast(ctx context.Context, name string, transInfo *sphinxproxy.Transact
 	}
 	handler, err = getter.GetTokenHandler(tokenInfo.TokenType, coins_register.OpBroadcast)
 	if err != nil {
-		errorf(name, "cannot get token handler: %v - %v", tokenInfo.TokenType, coins_register.OpBroadcast)
+		errorf(name, "cannot get token handler: %v - %v",
+			tokenInfo.TokenType,
+			coins_register.OpBroadcast)
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}

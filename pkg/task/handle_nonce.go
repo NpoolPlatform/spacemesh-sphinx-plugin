@@ -100,7 +100,9 @@ func nonce(ctx context.Context, name string, transInfo *sphinxproxy.TransactionI
 
 	handler, err = getter.GetTokenHandler(tokenInfo.TokenType, coins_register.OpPreSign)
 	if err != nil {
-		errorf(name, "cannot get token handler: %v - %v ", tokenInfo.TokenType, coins_register.OpPreSign)
+		errorf(name, "cannot get token handler: %v - %v ",
+			tokenInfo.TokenType,
+			coins_register.OpPreSign)
 		nextState = sphinxproxy.TransactionState_TransactionStateFail
 		goto done
 	}

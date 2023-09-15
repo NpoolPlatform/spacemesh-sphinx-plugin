@@ -3,9 +3,9 @@ module github.com/NpoolPlatform/sphinx-plugin-p2
 go 1.19
 
 require (
-	github.com/NpoolPlatform/go-service-framework v0.0.0-20230111070557-150463497bdd
-	github.com/NpoolPlatform/message v0.0.0-20230605075344-03a09d2c34b8
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230703034320-f179557aa5b5
+	github.com/NpoolPlatform/go-service-framework v0.0.0-20230913101807-3934219c0456
+	github.com/NpoolPlatform/message v0.0.0-20230914023737-ac5d6d2a3a03
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230914025325-158c3b77ef83
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230725102452-b8a8bf895666
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/shopspring/decimal v1.3.1

@@ -25,7 +25,7 @@ mkdir -p $go_root
 export GOROOT=$go_root
 export GOPATH=$go_path
 export GOBIN=$go_root/bin
-export GOPROXY="https://proxy.golang.org,direct"
+[ -z $GOPROXY ] && export GOPROXY="https://proxy.golang.org,direct"
 
 shopt -s expand_aliases
 alias go="$go_root/bin/go"

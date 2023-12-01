@@ -2,6 +2,10 @@
 MY_PATH=`cd $(dirname $0);pwd`
 ROOT_PATH=$MY_PATH/../
 LINT_BIN=${ROOT_PATH}/bin
+source $MY_PATH/golang-env.sh
+
+go clean --modcache
+go mod tidy
 
 set -o errexit
 set -o nounset
@@ -32,4 +36,4 @@ set -e
 
 golangci-lint version
 golangci-lint linters
-golangci-lint run "$@"
+golangci-lint --verbose run "$@"

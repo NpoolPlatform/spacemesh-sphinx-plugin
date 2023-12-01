@@ -118,3 +118,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/ugorji/go => github.com/ugorji/go v0.0.0-20190204201341-e444a5086c43

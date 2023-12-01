@@ -6,14 +6,14 @@ require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230922114506-a65341cfbf48
 	github.com/NpoolPlatform/message v0.0.0-20230923053829-31c88d9a36c2
 	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20231130083344-96adfd086687
-	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230725102452-b8a8bf895666
+	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/shopspring/decimal v1.3.1
-	github.com/spacemeshos/api/release/go v1.16.0
-	github.com/spacemeshos/go-spacemesh v1.0.2
+	github.com/spacemeshos/api/release/go v1.17.0
+	github.com/spacemeshos/go-spacemesh v1.0.19
 	github.com/urfave/cli/v2 v2.24.4
-	go.uber.org/zap v1.24.0
-	google.golang.org/grpc v1.56.2
+	go.uber.org/zap v1.25.0
+	google.golang.org/grpc v1.57.0
 )
 
 require (
@@ -57,7 +57,7 @@ require (
 	github.com/google/btree v1.0.1 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.2 // indirect
 	github.com/hashicorp/consul/api v1.20.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -69,10 +69,10 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/jhump/protoreflect v1.12.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.18 // indirect
+	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/minio/sha256-simd v1.0.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
@@ -88,8 +88,8 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/spacemeshos/go-scale v1.1.10 // indirect
 	github.com/spacemeshos/merkle-tree v0.2.2 // indirect
-	github.com/spacemeshos/poet v0.8.6 // indirect
-	github.com/spacemeshos/post v0.8.6 // indirect
+	github.com/spacemeshos/poet v0.8.7 // indirect
+	github.com/spacemeshos/post v0.8.11 // indirect
 	github.com/spacemeshos/sha256-simd v0.1.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
@@ -100,18 +100,17 @@ require (
 	github.com/subosito/gotenv v1.4.2 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	github.com/zeebo/blake3 v0.2.3 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/ratelimit v0.2.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/crypto v0.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
-	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.9.0 // indirect
-	golang.org/x/text v0.10.0 // indirect
+	golang.org/x/net v0.12.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/genproto v0.0.0-20230530153820-e85fd2cbaebc // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20230530153820-e85fd2cbaebc // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
+	google.golang.org/genproto v0.0.0-20230706204954-ccb25ca9f130 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230726155614-23370e0ffb3e // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect

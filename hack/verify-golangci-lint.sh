@@ -34,6 +34,8 @@ if [ ! $? -eq 0 ]; then
 fi
 set -e
 
+go env
+
 golangci-lint version
 golangci-lint linters
 golangci-lint --verbose run "$@"

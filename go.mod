@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230922114506-a65341cfbf48
 	github.com/NpoolPlatform/message v0.0.0-20230923053829-31c88d9a36c2
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20230924064941-63a3bc0fe04b
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20231130083344-96adfd086687
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20230725102452-b8a8bf895666
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/shopspring/decimal v1.3.1

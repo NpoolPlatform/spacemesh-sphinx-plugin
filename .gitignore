@@ -1,5 +1,5 @@
-/output
-/bin
+output
+bin
 tmp
 .tmp
 *.json

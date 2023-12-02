@@ -39,3 +39,5 @@ if [ ! $? -eq 0 ]; then
   tar -zxvf $go_data/$go_tar --strip-components 1 -C $go_root
 fi
 set -e
+
+export PATH=$GOBIN:$PATH

@@ -8,6 +8,6 @@ set -o nounset
 set -o pipefail
 
 cd $ROOT_PATH
-go get github.com/ugorji/go/codec@v1.2.7
-go get -d ./...
+go get -x github.com/ugorji/go/codec@v1.2.7
+go get -x -d ./...
 go mod tidy -compat=1.19

@@ -85,7 +85,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	if info.BaseInfo.ENV == coins.CoinNetMain {
 		hrp = account.MainHRP
 	} else {
-		hrp = account.StandaloneHRP
+		hrp = account.TestHRP
 	}
 	types.SetNetworkHRP(hrp)
 

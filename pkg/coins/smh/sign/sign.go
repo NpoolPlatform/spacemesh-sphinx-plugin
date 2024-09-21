@@ -51,8 +51,7 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	if info.ENV == coins.CoinNetMain {
 		hrp = account.MainHRP
 	} else {
-		// hrp = account.TestHRP
-		hrp = "standalone"
+		hrp = account.TestHRP
 	}
 
 	acc, err := account.CreateAccount()

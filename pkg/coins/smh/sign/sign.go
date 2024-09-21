@@ -51,8 +51,7 @@ func createAccount(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	if info.ENV == coins.CoinNetMain {
 		hrp = account.MainHRP
 	} else {
-		// hrp = account.TestHRP
-		hrp = account.StandaloneHRP
+		hrp = account.TestHRP
 	}
 
 	acc, err := account.CreateAccount()
@@ -86,8 +85,7 @@ func signTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	if info.BaseInfo.ENV == coins.CoinNetMain {
 		hrp = account.MainHRP
 	} else {
-		// hrp = account.TestHRP
-		hrp = account.StandaloneHRP
+		hrp = account.TestHRP
 	}
 	types.SetNetworkHRP(hrp)
 

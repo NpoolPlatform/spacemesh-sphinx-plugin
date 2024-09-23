@@ -10,6 +10,11 @@ import (
 	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh"
 	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh/plugin"
 	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/smh/sign"
+
+	// register handle
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/chia"
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/chia/plugin"
+	_ "github.com/NpoolPlatform/sphinx-plugin-p2/pkg/coins/chia/sign"
 )
 
 func GetTokenInfo(name string) *coins.TokenInfo {

@@ -183,13 +183,13 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 			spawnTxID := spawnH32.Hex()
 
 			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
-				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmlTxWrong)
+				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmhTxWrong)
 			}
 
 			if txState.GetState() == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
 				info.SpawnTx = nil
 			} else {
-				return false, smh.ErrSmlWaitSpawnFinish
+				return false, smh.ErrSmhWaitSpawnFinish
 			}
 		}
 
@@ -240,11 +240,11 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 	}
 
 	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
-		return in, smh.ErrSmlTxWrong
+		return in, smh.ErrSmhTxWrong
 	}
 
 	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_PROCESSED {
-		return in, smh.ErrSmlWaitSpendFinish
+		return in, smh.ErrSmhWaitSpendFinish
 	}
 
 	if txState.State == v1.TransactionState_TRANSACTION_STATE_PROCESSED {

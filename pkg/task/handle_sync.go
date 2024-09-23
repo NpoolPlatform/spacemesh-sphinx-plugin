@@ -44,7 +44,8 @@ func calcDuration() time.Duration {
 	return coins.SyncTime[coinType]
 }
 
-func syncTxWorker(name string, _interval time.Duration) {
+// TODO: second parm is bot be used
+func syncTxWorker(name string, _ time.Duration) {
 	interval := calcDuration()
 	log.Infof("%v start,dispatch interval time: %v", name, interval.String())
 	for range time.NewTicker(interval).C {

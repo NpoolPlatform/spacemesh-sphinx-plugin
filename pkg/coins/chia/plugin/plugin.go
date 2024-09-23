@@ -52,7 +52,7 @@ func init() {
 	}
 }
 
-func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func walletBalance(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := ct.WalletBalanceRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -73,7 +73,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 
 	cli := chia.Client()
 	var amount uint64
-	err = cli.WithClient(ctx, func(_ctx context.Context, c *chiaClient.Client) (bool, error) {
+	err = cli.WithClient(ctx, func(ctx context.Context, c *chiaClient.Client) (bool, error) {
 		amount, err = c.GetBalance(ctx, info.Address)
 		if err != nil {
 			return true, err
@@ -99,7 +99,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	return json.Marshal(_out)
 }
 
-func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func preSign(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := ct.BaseInfo{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -115,7 +115,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	var unsignedTx *transaction.UnsignedTx
 	cli := chia.Client()
 	err = cli.WithClient(ctx, func(ctx context.Context, c *chiaClient.Client) (bool, error) {
-		unsignedTx, err = transaction.GenUnsignedTx(context.Background(), c, info.From, info.To, amount, fee)
+		unsignedTx, err = transaction.GenUnsignedTx(ctx, c, info.From, info.To, amount, fee)
 		if err != nil {
 			return false, fmt.Errorf("%v, %v", chia.ErrChiaGenTx, err)
 		}
@@ -131,7 +131,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	return json.Marshal(waitSignTX)
 }
 
-func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func broadcast(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := chia.BroadcastRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -146,7 +146,6 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 		}
 		return false, nil
 	})
-
 	if err != nil {
 		return in, err
 	}
@@ -160,7 +159,7 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 }
 
 // syncTx sync transaction status on chain
-func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func syncTx(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := chia.SyncRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -185,7 +184,6 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		}
 		return false, nil
 	})
-
 	if err != nil {
 		return in, err
 	}

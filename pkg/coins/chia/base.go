@@ -22,6 +22,11 @@ const (
 	ChainUnitExp        = 12
 	ChainID             = "mainnet"
 	ChainNativeCoinName = "chia"
+
+	// 0.00009 xch
+	// MinStandardTXFee = 90000000
+	// but in reality,it is usually set to 1
+	MinStandardTXFee = 1
 )
 
 var (

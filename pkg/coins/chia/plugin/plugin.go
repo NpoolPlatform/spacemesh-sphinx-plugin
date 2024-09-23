@@ -110,7 +110,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	}
 
 	amount := chia.ToMojo(info.Value)
-	fee := uint64(100)
+	fee := uint64(chia.MinStandardTXFee)
 	// todo: should check,maybe can caculate from chain
 	var unsignedTx *transaction.UnsignedTx
 	cli := chia.Client()

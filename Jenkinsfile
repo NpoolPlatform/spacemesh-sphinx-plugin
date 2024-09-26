@@ -209,7 +209,7 @@ pipeline {
             branch=`echo $BRANCH_NAME | awk -F '/' '{ print $2 }'`
           fi
           set +e
-          docker images | grep sphinx-plugin | grep $branch
+          docker images | grep sphinx-plugin-p2 | grep $branch
           rc=$?
           set -e
           if [ 0 -eq $rc ]; then
@@ -222,6 +222,127 @@ pipeline {
         '''.stripIndent())
       }
     }
+    stage('Deploy for development') {
+      when {
+        expression { DEPLOY_TARGET == 'true' }
+        expression { TARGET_ENV ==~ /.*development.*/ }
+      }
+      steps {
+        sh(returnStdout: false, script: '''
+          branch=latest
+          if [ "x$BRANCH_NAME" != "xmaster" ]; then
+            branch=`echo $BRANCH_NAME | awk -F '/' '{ print $2 }'`
+          fi
+          sed -i "s/sphinx-plugin-p2:latest/sphinx-plugin-p2:$branch/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          export ENV_COIN_LOCAL_API=$ENV_COIN_LOCAL_API
+          export ENV_COIN_PUBLIC_API=$ENV_COIN_PUBLIC_API
+          export ENV_COIN_JSONRPC_LOCAL_API=$ENV_COIN_JSONRPC_LOCAL_API
+          export ENV_COIN_JSONRPC_PUBLIC_API=$ENV_COIN_JSONRPC_PUBLIC_API
+          export ENV_COIN_TYPE=$ENV_COIN_TYPE
+          export ENV_COIN_NET=$ENV_COIN_NET
+          export ENV_PROXY=$ENV_PROXY
+          export ENV_SYNC_INTERVAL=$ENV_SYNC_INTERVAL
+          export ENV_POSITION=$ENV_POSITION
+          export ENV_WAN_IP=$ENV_WAN_IP
+          export ENV_CONTRACT=$ENV_CONTRACT
+          export ENV_CHAIN_ID=$ENV_CHAIN_ID
+          export ENV_CHAIN_NICKNAME=$ENV_CHAIN_NICKNAME
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/00-configmap.yaml
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          envsubst < cmd/sphinx-plugin-p2/k8s/00-configmap.yaml | kubectl apply -f -
+          export PROXY_HOST_CONFIG=$PROXY_HOST_CONFIG
+          envsubst < cmd/sphinx-plugin-p2/k8s/proxy-host-config.yaml | kubectl apply -f -
+          make deploy-to-k8s-cluster
+        '''.stripIndent())
+      }
+    }
+    stage('Deploy for testing') {
+      when {
+        expression { DEPLOY_TARGET == 'true' }
+        expression { TARGET_ENV ==~ /.*testing.*/ }
+      }
+      steps {
+        sh(returnStdout: false, script: '''
+          set +e
+          revlist=`git rev-list --tags --max-count=1`
+          rc=$?
+          set -e
+          if [ ! 0 -eq $rc -o x"$revlist" == x]; then
+            exit 0
+          fi
+          tag=`git tag --sort=-v:refname | grep [1\\|3\\|5\\|7\\|9]$ | head -n1`
+
+          git reset --hard
+          git checkout $tag
+          sed -i "s/sphinx-plugin-p2:latest/sphinx-plugin-p2:$tag/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          sed -i "s/imagePullPolicy: Always/imagePullPolicy: IfNotPresent/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          export ENV_COIN_LOCAL_API=$ENV_COIN_LOCAL_API
+          export ENV_COIN_PUBLIC_API=$ENV_COIN_PUBLIC_API
+          export ENV_COIN_JSONRPC_LOCAL_API=$ENV_COIN_JSONRPC_LOCAL_API
+          export ENV_COIN_JSONRPC_PUBLIC_API=$ENV_COIN_JSONRPC_PUBLIC_API
+          export ENV_COIN_TYPE=$ENV_COIN_TYPE
+          export ENV_COIN_NET=$ENV_COIN_NET
+          export ENV_PROXY=$ENV_PROXY
+          export ENV_SYNC_INTERVAL=$ENV_SYNC_INTERVAL
+          export ENV_POSITION=$ENV_POSITION
+          export ENV_WAN_IP=$ENV_WAN_IP
+          export ENV_CONTRACT=$ENV_CONTRACT
+          export ENV_CHAIN_ID=$ENV_CHAIN_ID
+          export ENV_CHAIN_NICKNAME=$ENV_CHAIN_NICKNAME
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/00-configmap.yaml
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          envsubst < cmd/sphinx-plugin-p2/k8s/00-configmap.yaml | kubectl apply -f -
+          export PROXY_HOST_CONFIG=$PROXY_HOST_CONFIG
+          envsubst < cmd/sphinx-plugin-p2/k8s/proxy-host-config.yaml | kubectl apply -f -
+          make deploy-to-k8s-cluster
+        '''.stripIndent())
+      }
+    }
+    stage('Deploy for production') {
+      when {
+        expression { DEPLOY_TARGET == 'true' }
+        expression { TARGET_ENV ==~ /.*production.*/ }
+      }
+      steps {
+        sh(returnStdout: false, script: '''
+          set +e
+          taglist=`git rev-list --tags`
+          rc=$?
+          set -e
+          if [ ! 0 -eq $rc -o x"$revlist" == x]; then
+            exit 0
+          fi
+          tag=`git tag --sort=-v:refname | grep [0\\|2\\|4\\|6\\|8]$ | head -n1`
+          git reset --hard
+          git checkout $tag
+          sed -i "s/sphinx-plugin-p2:latest/sphinx-plugin-p2:$tag/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          sed -i "s/imagePullPolicy: Always/imagePullPolicy: IfNotPresent/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          export ENV_COIN_LOCAL_API=$ENV_COIN_LOCAL_API
+          export ENV_COIN_PUBLIC_API=$ENV_COIN_PUBLIC_API
+          export ENV_COIN_JSONRPC_LOCAL_API=$ENV_COIN_JSONRPC_LOCAL_API
+          export ENV_COIN_JSONRPC_PUBLIC_API=$ENV_COIN_JSONRPC_PUBLIC_API
+          export ENV_COIN_TYPE=$ENV_COIN_TYPE
+          export ENV_COIN_NET=$ENV_COIN_NET
+          export ENV_PROXY=$ENV_PROXY
+          export ENV_SYNC_INTERVAL=$ENV_SYNC_INTERVAL
+          export ENV_POSITION=$ENV_POSITION
+          export ENV_WAN_IP=$ENV_WAN_IP
+          export ENV_CONTRACT=$ENV_CONTRACT
+          export ENV_CHAIN_ID=$ENV_CHAIN_ID
+          export ENV_CHAIN_NICKNAME=$ENV_CHAIN_NICKNAME
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/00-configmap.yaml
+          sed -i "s/sphinx-plugin-p2-coin/sphinx-plugin-p2-${ENV_COIN_TYPE}-${ENV_COIN_NET}/g" cmd/sphinx-plugin-p2/k8s/01-sphinx-plugin-p2.yaml
+          envsubst < cmd/sphinx-plugin-p2/k8s/00-configmap.yaml | kubectl apply -f -
+          export PROXY_HOST_CONFIG=$PROXY_HOST_CONFIG
+          envsubst < cmd/sphinx-plugin-p2/k8s/proxy-host-config.yaml | kubectl apply -f -
+          make deploy-to-k8s-cluster
+        '''.stripIndent())
+      }
+    }
+
   }
   post('Report') {
     fixed {

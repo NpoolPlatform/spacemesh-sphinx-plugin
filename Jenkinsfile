@@ -215,7 +215,7 @@ pipeline {
           if [ 0 -eq $rc ]; then
             DOCKER_REGISTRY=$DOCKER_REGISTRY make sphinx-plugin-p2-release
           fi
-          images=`docker images | grep entropypool | grep sphinx-plugin | grep none | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep sphinx-plugin-p2 | grep none | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image -f
           done

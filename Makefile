@@ -56,13 +56,13 @@ ${SERVICES}:
 	${REPO_ROOT}/hack/verify-build.sh $@
 
 ${SERVICEIMAGES}:
-	${REPO_ROOT}/hack/generate-docker-image.sh $(@:%-image=%) $(DEVELOPMENT) $(DOCKER_REGISTRY)
+	${REPO_ROOT}/hack/generate-docker-image.sh $(@:%-image=%) $(DOCKER_REGISTRY)
 
 ${SERVICEIMAGERELEASES}:
-	${REPO_ROOT}/hack/release-docker-image.sh $(@:%-release=%) $(TAG) $(DOCKER_REGISTRY)
+	${REPO_ROOT}/hack/release-docker-image.sh $(@:%-release=%) $(DOCKER_REGISTRY)
 
 ${SERVICEK8SDEPLOYS}:
-	${REPO_ROOT}/hack/deploy-to-k8s-cluster.sh $(@:%-k8s-deploy=%)$ (TAG)
+	${REPO_ROOT}/hack/deploy-to-k8s-cluster.sh $(@:%-k8s-deploy=%)
 
 generate-docker-images: ${SERVICES} ${SERVICEIMAGES}
 release-docker-images: ${generate-docker-images} ${SERVICEIMAGERELEASES}

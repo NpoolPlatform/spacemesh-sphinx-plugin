@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sphinx-plugin-p2-coin
+  namespace: kube-system
+  annotations:
+    "sidecar.jaegertracing.io/inject": "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sphinx-plugin-p2-coin
+  template:
+    metadata:
+      labels:
+        app: sphinx-plugin-p2-coin
+    spec:
+      containers:
+      - name: sphinx-plugin-p2-coin
+        image: uhub.service.ucloud.cn/entropypool/sphinx-plugin-p2:latest
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: host-config
+            mountPath: /tmp/hosts
+            subPath: .pluginp2proxyconfig
+        env:
+        - name: ENV_ENVIRONMENT_TARGET
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.target
+        - name: ENV_CONSUL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.consul_host
+        - name: ENV_CONSUL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.consul_port
+        - name: ENV_CLUSTER_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: ENV_COIN_LOCAL_API
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_local_api
+        - name: ENV_COIN_PUBLIC_API
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_public_api
+        - name: ENV_COIN_JSONRPC_LOCAL_API
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_jsonrpc_local_api
+        - name: ENV_COIN_JSONRPC_PUBLIC_API
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_jsonrpc_public_api
+        - name: ENV_COIN_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_type
+        - name: ENV_COIN_NET
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.coin_net
+        - name: ENV_PROXY
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.proxy
+        - name: ENV_SYNC_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.sync_interval
+        - name: ENV_POSITION
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.position
+        - name: ENV_WAN_IP
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.wan_ip
+        - name: ENV_CONTRACT
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.contract
+        - name: ENV_CHAIN_ID
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.chain_id
+        - name: ENV_CHAIN_NICKNAME
+          valueFrom:
+            configMapKeyRef:
+              name: sphinx-plugin-p2-coin-environment
+              key: environment.nickname
+        command: ["/bin/sh", "-c", "cat /tmp/hosts >> /etc/hosts && /usr/local/bin/sphinx-plugin-p2 run"]
+      volumes:
+        - name: host-config
+          configMap:
+            name: pluginp2proxyconfig

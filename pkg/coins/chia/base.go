@@ -3,6 +3,7 @@ package chia
 import (
 	"errors"
 	"math/big"
+	"math"
 	"strings"
 
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
@@ -82,8 +83,16 @@ func init() {
 	register.RegisteTokenInfo(chiaToken)
 }
 
-func ToXCH(mojo uint64) decimal.Decimal {
-	return decimal.NewFromBigInt(big.NewInt(int64(mojo)), ChiaExp)
+func ToXCH(mojo uint64) (decimal.Decimal, error) {
+	n, err := decimal.NewFromString(str)
+	if err != nil {
+		return decimal.NewFromInt(0), err
+	}
+	p, err := decimal.NewFromString(str)
+	if err != nil {
+		return decimal.NewFromInt(0), err
+	}
+	return n.Div(p), nil
 }
 
 func ToMojo(value float64) uint64 {

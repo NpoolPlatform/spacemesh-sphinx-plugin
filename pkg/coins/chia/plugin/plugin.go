@@ -85,7 +85,10 @@ func walletBalance(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []by
 		return in, err
 	}
 
-	balance := chia.ToXCH(amount)
+	balance, err := chia.ToXCH(amount)
+	if err != nil {
+		return in, err
+	}
 	f, exact := balance.Float64()
 	if exact {
 		log.Warnf("wallet balance transfer warning balance from->to %v-%v", balance.String(), f)

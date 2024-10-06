@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  .pluginproxyconfig: |
+    $PROXY_HOST_CONFIG
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: pluginp2proxyconfig
+  namespace: kube-system
+

@@ -2,6 +2,8 @@ package chia
 
 import (
 	"errors"
+	"fmt"
+	"math"
 	"math/big"
 	"strings"
 
@@ -82,8 +84,18 @@ func init() {
 	register.RegisteTokenInfo(chiaToken)
 }
 
-func ToXCH(mojo uint64) decimal.Decimal {
-	return decimal.NewFromBigInt(big.NewInt(int64(mojo)), ChiaExp)
+func ToXCH(mojo uint64) (decimal.Decimal, error) {
+	str := fmt.Sprintf("%v", mojo)
+	n, err := decimal.NewFromString(str)
+	if err != nil {
+		return decimal.NewFromInt(0), err
+	}
+	str = fmt.Sprintf("%v", uint64(math.Pow(10, float64(-ChiaExp))))
+	p, err := decimal.NewFromString(str)
+	if err != nil {
+		return decimal.NewFromInt(0), err
+	}
+	return n.Div(p), nil
 }
 
 func ToMojo(value float64) uint64 {

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sphinx-plugin-p2-coin-environment
+  namespace: kube-system
+data:
+  environment.coin_local_api: "$ENV_COIN_LOCAL_API"
+  environment.coin_public_api: "$ENV_COIN_PUBLIC_API"
+  environment.coin_jsonrpc_local_api: "$ENV_COIN_JSONRPC_LOCAL_API"
+  environment.coin_jsonrpc_public_api: "$ENV_COIN_JSONRPC_PUBLIC_API"
+  environment.coin_type: "$ENV_COIN_TYPE"
+  environment.coin_net: "$ENV_COIN_NET"
+  environment.proxy: "$ENV_PROXY"
+  environment.sync_interval: "$ENV_SYNC_INTERVAL"
+  environment.position: "$ENV_POSITION"
+  environment.wan_ip: "$ENV_WAN_IP"
+  environment.contract: "$ENV_CONTRACT"
+  environment.chain_id: "$ENV_CHAIN_ID"
+  environment.nickname: "$ENV_CHAIN_NICKNAME"

@@ -6,7 +6,7 @@ require (
 	github.com/NpoolPlatform/chia-client v0.0.0-20240921123648-0f8864acdd03
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc
 	github.com/NpoolPlatform/message v0.0.0-20240921074648-bdf06c4ae271
-	github.com/NpoolPlatform/sphinx-plugin  v0.0.0-20240921075833-d4b84fc33ece
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20240921075833-d4b84fc33ece
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264
 	github.com/chia-network/go-chia-libs v0.8.6
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be

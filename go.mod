@@ -124,5 +124,3 @@ require (
 )
 
 replace github.com/ugorji/go => github.com/ugorji/go v0.0.0-20190204201341-e444a5086c43
-
-replace github.com/NpoolPlatform/sphinx-plugin => github.com/NpoolPlatform/sphinx-plugin v0.0.0-20240921075833-d4b84fc33ece

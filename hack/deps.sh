@@ -9,5 +9,5 @@ set -o pipefail
 
 cd $ROOT_PATH
 go get -x github.com/ugorji/go/codec@v1.2.7
-go get -d ./...
+go get ./...
 go mod tidy

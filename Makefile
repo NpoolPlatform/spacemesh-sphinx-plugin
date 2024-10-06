@@ -20,7 +20,7 @@ go.mod:
 	${REPO_ROOT}/hack/gomod.sh
 
 deps:
-	all_proxy=${all_proxy} ${REPO_ROOT}/hack/deps.sh
+	all_proxy=${all_proxy} bash -x ${REPO_ROOT}/hack/deps.sh
 
 ##@ Verify
 

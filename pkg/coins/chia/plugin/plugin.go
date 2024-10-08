@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/NpoolPlatform/chia-client/pkg/account"
 	chiaClient "github.com/NpoolPlatform/chia-client/pkg/client"
 	"github.com/NpoolPlatform/chia-client/pkg/transaction"
 
@@ -58,17 +59,21 @@ func walletBalance(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []by
 		return in, err
 	}
 
-	v, ok := env.LookupEnv(env.ENVCOINNET)
+	coinnet, ok := env.LookupEnv(env.ENVCOINNET)
 	if !ok {
 		return in, env.ErrEVNCoinNet
 	}
 
-	if !coins.CheckSupportNet(v) {
+	if !coins.CheckSupportNet(coinnet) {
 		return in, env.ErrEVNCoinNetValue
 	}
 
 	if info.Address == "" {
 		return in, env.ErrAddressInvalid
+	}
+
+	if err := account.CheckAddress(info.Address, coinnet == coins.CoinNetMain); err != nil {
+		return in, err
 	}
 
 	cli := chia.Client()
@@ -110,6 +115,14 @@ func preSign(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, er
 
 	if !coins.CheckSupportNet(info.ENV) {
 		return nil, env.ErrEVNCoinNetValue
+	}
+
+	if err := account.CheckAddress(info.From, info.ENV == coins.CoinNetMain); err != nil {
+		return in, err
+	}
+
+	if err := account.CheckAddress(info.To, info.ENV == coins.CoinNetMain); err != nil {
+		return in, err
 	}
 
 	amount := chia.ToMojo(info.Value)

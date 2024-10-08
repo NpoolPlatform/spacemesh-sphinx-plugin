@@ -1,9 +1,14 @@
 #!/bin/bash
 MY_PATH=`cd $(dirname $0);pwd`
 ROOT_PATH=$MY_PATH/../
-go_name=go1.23.1
+go_name=go1.23.2
 
-go_tar="go1.23.1.linux-amd64.tar.gz"
+go_version=`go version |grep $go_name`
+if [ $? -eq 0 ]; then
+  return 
+fi
+
+go_tar="go1.23.2.linux-amd64.tar.gz"
 go_tar_url="https://go.dev/dl/$go_tar"
 go_data=~/.golang/$go_name
 go_path=$go_data/gopath

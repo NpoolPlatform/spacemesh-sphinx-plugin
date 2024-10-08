@@ -21,7 +21,7 @@ mkdir -p $go_root
 export GOROOT=$go_root
 export GOPATH=$go_path
 export GOBIN=$go_root/bin
-[ -z $GOPROXY ] && export GOPROXY="https://proxy.golang.org,direct"
+export GOPROXY="https://goproxy.cn,direct"
 
 export PATH=$GOBIN:$PATH
 

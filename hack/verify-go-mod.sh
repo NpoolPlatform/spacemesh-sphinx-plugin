@@ -6,6 +6,5 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-go get github.com/ugorji/go/codec@v1.2.7
-go mod tidy -compat=1.23
+go mod tidy -compat=1.23.2
 git diff --exit-code go.*

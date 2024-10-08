@@ -118,11 +118,11 @@ func preSign(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, er
 	}
 
 	if err := account.CheckAddress(info.From, info.ENV == coins.CoinNetMain); err != nil {
-		return in, err
+		return in, fmt.Errorf("%v,%v", env.ErrAddressInvalid, err)
 	}
 
 	if err := account.CheckAddress(info.To, info.ENV == coins.CoinNetMain); err != nil {
-		return in, err
+		return in, fmt.Errorf("%v,%v", env.ErrAddressInvalid, err)
 	}
 
 	amount := chia.ToMojo(info.Value)

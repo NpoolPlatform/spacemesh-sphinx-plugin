@@ -3,7 +3,7 @@ module github.com/NpoolPlatform/sphinx-plugin-p2
 go 1.23.2
 
 require (
-	github.com/NpoolPlatform/chia-client v0.0.0-20241007073525-7fa1261c40e6
+	github.com/NpoolPlatform/chia-client v0.0.0-20241008063527-22e8c5c2e5d5
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc
 	github.com/NpoolPlatform/message v0.0.0-20240921074648-bdf06c4ae271
 	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241006100816-4049b7855dce

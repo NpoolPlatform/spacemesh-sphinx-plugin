@@ -41,14 +41,12 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
-github.com/NpoolPlatform/chia-client v0.0.0-20240921123648-0f8864acdd03 h1:pHbsGEKEvvV4gatTlHP0QrF+RBy9093zLbP5MG8xs+0=
-github.com/NpoolPlatform/chia-client v0.0.0-20240921123648-0f8864acdd03/go.mod h1:u57p1e9uZFp5WDM7S8fyeanquoHX33EF2qGVinlyIyU=
+github.com/NpoolPlatform/chia-client v0.0.0-20241007073525-7fa1261c40e6 h1:xHiQ2SKeU+yHHDGB2hp+PQoDECRH5KiYWsfoDOvtcd4=
+github.com/NpoolPlatform/chia-client v0.0.0-20241007073525-7fa1261c40e6/go.mod h1:u57p1e9uZFp5WDM7S8fyeanquoHX33EF2qGVinlyIyU=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc h1:iHYS/IVy+vsEvfxk3wF9u9EueInbLQ6NuXQn9zLvlxk=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc/go.mod h1:8ZqSAAL4eLX/09HLWwDzQY0fMORy8nqHj3kwiUHEyS4=
 github.com/NpoolPlatform/message v0.0.0-20240921074648-bdf06c4ae271 h1:MmCqmkq/B5dxccAcsvXMdykGbicTjXxIo66/iWuyJZM=
 github.com/NpoolPlatform/message v0.0.0-20240921074648-bdf06c4ae271/go.mod h1:PxJpF0vSSOke+NJskbRBRQ2fK2K3SRe8zaEja+GxSHk=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20240817080828-a31c46c99a80 h1:NNKMl8QYqUbr0GeGXudbsHwREqYFi0EfDowhjTgRxaI=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20240817080828-a31c46c99a80/go.mod h1:gTa1Bk+vhtW4ADTFFme+IOeOySYigQ7YfK+2wRWdB2o=
 github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241006100816-4049b7855dce h1:+0ApiLtiix4AcdMT+nBYd+xy3xqpJDxamJAocZp0rzY=
 github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241006100816-4049b7855dce/go.mod h1:qgC29oOPPJYNKahQ3+mTBO4R+CKdA2I/CIMQmbFrdZ0=
 github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264 h1:QX4/Wy9Q+AVo1/TXDKf+0Tcm2biNXsB9KAqXDPMuROI=
@@ -543,8 +541,8 @@ github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7/go.mod h1:q4W45
 github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926/go.mod h1:9ESjWnEqriFuLhtthL60Sar/7RFoluCcXsuvEwTV5KM=
 github.com/ugorji/go v0.0.0-20190204201341-e444a5086c43 h1:nLURyLzmXqqnferXOGs9EA2kbhl/bks8vSyptHCxH34=
 github.com/ugorji/go v0.0.0-20190204201341-e444a5086c43/go.mod h1:hnLbHMwcvSihnDhEfx2/BzKp2xb0Y+ErdfYcrs9tkJQ=
-github.com/ugorji/go/codec v1.2.12 h1:9LC83zGrHhuUA9l16C9AHXAqEV/2wBQ4nkvumAE65EE=
-github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
+github.com/ugorji/go/codec v1.2.7 h1:YPXUKf7fYbp/y8xloBqZOw2qaVggbfwMlI8WM3wZUJ0=
+github.com/ugorji/go/codec v1.2.7/go.mod h1:WGN1fab3R1fzQlVQTkfxVtIBhWDRqOviHU95kRgeqEY=
 github.com/urfave/cli/v2 v2.24.4 h1:0gyJJEBYtCV87zI/x2nZCPyDxD51K6xM8SkwjHFCNEU=
 github.com/urfave/cli/v2 v2.24.4/go.mod h1:GHupkWPMM0M/sj1a2b4wUrWBPzazNrIjouW6fmdJLxc=
 github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 h1:bAn7/zixMGCfxrRTfdpNzjtPYqr8smhKouy9mxVdGPU=

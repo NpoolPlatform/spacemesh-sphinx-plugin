@@ -54,7 +54,7 @@ func nonceWorker(name string, interval time.Duration) {
 				TransactionState: tState,
 			})
 			if err != nil {
-				errorf(name, "call Transaction error: %v", err)
+				errorf(name, "call transaction error: %v", err)
 				return
 			}
 

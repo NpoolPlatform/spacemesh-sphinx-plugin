@@ -22,7 +22,7 @@ const (
 	ChainNativeUnit     = "XCH"
 	ChainAtomicUnit     = "mojo"
 	ChainUnitExp        = 12
-	ChainID             = "mainnet"
+	ChainID             = "N/A"
 	ChainNativeCoinName = "chia"
 
 	// 0.00009 xch

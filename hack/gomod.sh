@@ -11,4 +11,4 @@ cd $ROOT_PATH
 GITREPO=$(shell git remote -v | grep fetch | awk '{print $$2}' | sed 's/\.git//g' | sed 's/https:\/\///g')
 
 go mod init ${GITREPO}
-go mod tidy -compat=1.19
+go mod tidy -compat=1.23

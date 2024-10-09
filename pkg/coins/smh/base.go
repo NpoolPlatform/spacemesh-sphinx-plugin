@@ -41,14 +41,14 @@ var (
 	ErrSmhNodeNotSynced = errors.New("spacemesh node not synced")
 	// ErrSmhBlockNotFound ..
 	ErrSmhBlockNotFound = errors.New("not found confirmed block in spacemesh chain")
-	// ErrSmlSignatureWrong ..
-	ErrSmlSignatureWrong = errors.New("spacemesh signature is wrong or failed")
-	// ErrSmlTxWrong ..
-	ErrSmlTxWrong = errors.New("spacemesh transaction is wrong or failed")
-	// ErrSmlWaitSpawnFinish ..
-	ErrSmlWaitSpawnFinish = errors.New("wait spwan transaction finish")
-	// ErrSmlWaitSpendFinish ..
-	ErrSmlWaitSpendFinish = errors.New("wait spend transaction finish")
+	// ErrSmhSignatureWrong ..
+	ErrSmhSignatureWrong = errors.New("spacemesh signature is wrong or failed")
+	// ErrSmhTxWrong ..
+	ErrSmhTxWrong = errors.New("spacemesh transaction is wrong or failed")
+	// ErrSmhWaitSpawnFinish ..
+	ErrSmhWaitSpawnFinish = errors.New("wait spwan transaction finish")
+	// ErrSmhWaitSpendFinish ..
+	ErrSmhWaitSpendFinish = errors.New("wait spend transaction finish")
 )
 
 var (
@@ -58,8 +58,8 @@ var (
 		ErrSmhAddressWrong.Error(),
 		ErrSmhInsufficient.Error(),
 		ErrSmhBlockNotFound.Error(),
-		ErrSmlSignatureWrong.Error(),
-		ErrSmlTxWrong.Error(),
+		ErrSmhSignatureWrong.Error(),
+		ErrSmhTxWrong.Error(),
 		ErrSmhNodeNotSynced.Error(),
 	}
 	spacemeshToken = &coins.TokenInfo{OfficialName: "Spacemesh", Decimal: ChainUnitExp, Unit: "SMH", Name: ChainNativeCoinName, OfficialContract: ChainNativeCoinName, TokenType: coins.Spacemesh}

@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"syscall"
-	"time"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	"github.com/NpoolPlatform/sphinx-plugin-p2/pkg/task"
@@ -17,18 +15,14 @@ import (
 	"go.uber.org/zap"
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 var runCmd = &cli.Command{
 	Name:    "run",
 	Aliases: []string{"r"},
 	Usage:   "Run Sphinx Plugin P2 daemon",
-	After: func(c *cli.Context) error {
+	After: func(_ *cli.Context) error {
 		return logger.Sync()
 	},
-	Before: func(ctx *cli.Context) error {
+	Before: func(_ *cli.Context) error {
 		// TODO: elegent set or get env
 		config.SetENV(&config.ENVInfo{
 			LocalWalletAddr:  localWalletAddr,
@@ -150,7 +144,7 @@ var runCmd = &cli.Command{
 			Destination: &buildChainServer,
 		},
 	},
-	Action: func(c *cli.Context) error {
+	Action: func(_ *cli.Context) error {
 		log.Infof(
 			"run plugin wanIP: %v, Position %v",
 			config.GetENV().WanIP,

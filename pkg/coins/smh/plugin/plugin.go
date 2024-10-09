@@ -54,7 +54,7 @@ func init() {
 	}
 }
 
-func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func walletBalance(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := ct.WalletBalanceRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -75,7 +75,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 
 	cli := smh.Client()
 	var accountState *v1.Account
-	err = cli.WithClient(ctx, func(_ctx context.Context, c *smhclient.Client) (bool, error) {
+	err = cli.WithClient(ctx, func(ctx context.Context, c *smhclient.Client) (bool, error) {
 		accountState, err = c.AccountState(ctx, v1.AccountId{Address: info.Address})
 		if err != nil || accountState == nil {
 			return true, err
@@ -101,7 +101,7 @@ func walletBalance(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (
 	return json.Marshal(_out)
 }
 
-func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func preSign(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := ct.BaseInfo{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -150,7 +150,7 @@ func preSign(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []
 	return json.Marshal(_out)
 }
 
-func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func broadcast(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := smh.BroadcastRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -183,13 +183,13 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 			spawnTxID := spawnH32.Hex()
 
 			if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
-				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmlTxWrong)
+				return false, fmt.Errorf("spawn tx %s failed, %s", spawnTxID, smh.ErrSmhTxWrong)
 			}
 
 			if txState.GetState() == v1.TransactionState_TRANSACTION_STATE_PROCESSED {
 				info.SpawnTx = nil
 			} else {
-				return false, smh.ErrSmlWaitSpawnFinish
+				return false, smh.ErrSmhWaitSpawnFinish
 			}
 		}
 
@@ -204,7 +204,6 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 
 		return false, nil
 	})
-
 	if err != nil {
 		return in, err
 	}
@@ -217,7 +216,7 @@ func broadcast(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out 
 }
 
 // syncTx sync transaction status on chain
-func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []byte, err error) {
+func syncTx(ctx context.Context, in []byte, _ *coins.TokenInfo) (out []byte, err error) {
 	info := ct.SyncRequest{}
 	if err := json.Unmarshal(in, &info); err != nil {
 		return in, err
@@ -234,17 +233,16 @@ func syncTx(ctx context.Context, in []byte, tokenInfo *coins.TokenInfo) (out []b
 		}
 		return false, nil
 	})
-
 	if err != nil {
 		return in, err
 	}
 
 	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_MEMPOOL || tx == nil {
-		return in, smh.ErrSmlTxWrong
+		return in, smh.ErrSmhTxWrong
 	}
 
 	if txState.GetState() < v1.TransactionState_TRANSACTION_STATE_PROCESSED {
-		return in, smh.ErrSmlWaitSpendFinish
+		return in, smh.ErrSmhWaitSpendFinish
 	}
 
 	if txState.State == v1.TransactionState_TRANSACTION_STATE_PROCESSED {

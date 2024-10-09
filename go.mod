@@ -5,8 +5,8 @@ go 1.23.2
 require (
 	github.com/NpoolPlatform/chia-client v0.0.0-20241008063527-22e8c5c2e5d5
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc
-	github.com/NpoolPlatform/message v0.0.0-20240921074648-bdf06c4ae271
-	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241006100816-4049b7855dce
+	github.com/NpoolPlatform/message v0.0.0-20241009091849-457a5bb9814b
+	github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241009093757-3d377171a343
 	github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264
 	github.com/chia-network/go-chia-libs v0.8.6
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be

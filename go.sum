@@ -47,8 +47,8 @@ github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc
 github.com/NpoolPlatform/go-service-framework v0.0.0-20240710095805-e6137d987fcc/go.mod h1:8ZqSAAL4eLX/09HLWwDzQY0fMORy8nqHj3kwiUHEyS4=
 github.com/NpoolPlatform/message v0.0.0-20241009091849-457a5bb9814b h1:ImyFn9i2ZX5IFIqAh0UmyBlCUH+xz1Pyuu8SdvQPc8M=
 github.com/NpoolPlatform/message v0.0.0-20241009091849-457a5bb9814b/go.mod h1:PxJpF0vSSOke+NJskbRBRQ2fK2K3SRe8zaEja+GxSHk=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241009093757-3d377171a343 h1:3DXQp3BmQeE2t5sQ6dgwtSX/SFo4m/iTJzwCy3pG6g4=
-github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241009093757-3d377171a343/go.mod h1:AhPGHthNbqnqAeY9FHkzSPvqcjKbUin/YxO7KgSDFNo=
+github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241023040715-4645c364e403 h1:SoaJafKunhiu41yyfxz5LSY6aZulrEFsdy8TPeAwFHo=
+github.com/NpoolPlatform/sphinx-plugin v0.0.0-20241023040715-4645c364e403/go.mod h1:AhPGHthNbqnqAeY9FHkzSPvqcjKbUin/YxO7KgSDFNo=
 github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264 h1:QX4/Wy9Q+AVo1/TXDKf+0Tcm2biNXsB9KAqXDPMuROI=
 github.com/NpoolSpacemesh/spacemesh-plugin v0.0.0-20231201121331-179ec49b4264/go.mod h1:2f5qkQUnrKDtZdCBxXtaaN58Rwl3RKUoxUOWPODNLUA=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
